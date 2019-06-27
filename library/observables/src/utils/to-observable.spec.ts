@@ -1,12 +1,12 @@
 import {toObservable} from './to-observable';
 import {isObservable, Observable, of} from 'rxjs';
-import {syncToArray} from '../../tests/observable.helper';
+import {expect$} from '../../tests/observable.helper';
 
 describe(toObservable.name, () => {
     it('should create observable for literal values', () => {
         const $ = toObservable('house');
         expect(isObservable($)).toBeTruthy();
-        expect(syncToArray($)).toEqual(['house']);
+        expect$($).toEqual(['house']);
     });
 
     it('should not modify an observable', () => {
@@ -18,12 +18,12 @@ describe(toObservable.name, () => {
     it('should emit undefined', () => {
         const $ = toObservable(undefined);
         expect(isObservable($)).toBeTruthy();
-        expect(syncToArray($)).toEqual([undefined]);
+        expect$($).toEqual([undefined]);
     });
 
     it('should emit an array', () => {
         const $: Observable<number[]> = toObservable([1, 2, 3, 4]);
         expect(isObservable($)).toBeTruthy();
-        expect(syncToArray($)).toEqual([[1, 2, 3, 4]]);
+        expect$($).toEqual([[1, 2, 3, 4]]);
     });
 });

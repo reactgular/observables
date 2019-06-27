@@ -1,6 +1,5 @@
 import {MonoTypeOperatorFunction, Observable} from 'rxjs';
 import {defaultIfEmpty, distinctUntilChanged, filter, map, withLatestFrom} from 'rxjs/operators';
-import {negate} from './negate';
 
 /**
  * Disables emitting of values while the passed observable emits true.
@@ -19,9 +18,3 @@ export function disabledWhen<T>(disabled: Observable<boolean>): MonoTypeOperator
     };
 }
 
-/**
- * Enables emitting of values while the passed observable emits true.
- */
-export function enabledWhen<TType>(enabled: Observable<boolean>): MonoTypeOperatorFunction<TType> {
-    return (source: Observable<TType>): Observable<TType> => source.pipe(disabledWhen(enabled.pipe(negate())));
-}
