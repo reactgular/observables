@@ -39,10 +39,14 @@ of([1,2,3], [1,2,3], [4,5,6]).pipe(
 
 Here is a list of rxjs operators that you can use from this library.
 
+```typescript
 {{OPERATORS}}
+```
 
 # Utilities
 
 Here is a list of utility functions that you can use from this library.
 
+```typescript
 {{UTILITIES}}
+```

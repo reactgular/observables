@@ -19,7 +19,7 @@
     "test": "ng test --watch=false --code-coverage=true",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postbuild": "cp README.md ./dist/README.md"
+    "postbuild": "node post-build.js"
   },
   "private": true,
   "dependencies": {
