@@ -1,6 +1,6 @@
 {
   "name": "@reactgular/observables",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "",
   "author": "reactgular.com",
   "homepage": "https://reactgular.com/",
@@ -19,6 +19,7 @@
   ],
   "peerDependencies": {
     "@angular/common": "^8.0.0",
-    "@angular/core": "^8.0.0"
+    "@angular/core": "^8.0.0",
+    "rxjs": "^6.5.0"
   }
 }
