@@ -1,7 +1,7 @@
 {
   "name": "@reactgular/observables",
-  "version": "1.0.4",
-  "description": "",
+  "version": "1.0.5",
+  "description": "Angular library that contains handy rxjs operators.",
   "author": "reactgular.com",
   "homepage": "https://reactgular.com/",
   "license": "MIT",
@@ -19,19 +19,19 @@
     "test": "ng test --watch=false --code-coverage=true",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postbuild": "node post-build.js"
+    "postbuild": "npm run readme && cp README.md dist/README.md",
+    "readme": "node readme.js"
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "~8.0.0",
     "@angular/common": "~8.0.0",
     "@angular/compiler": "~8.0.0",
     "@angular/core": "~8.0.0",
-    "@angular/forms": "~8.0.0",
     "@angular/platform-browser": "~8.0.0",
     "@angular/platform-browser-dynamic": "~8.0.0",
     "@angular/router": "~8.0.0",
     "core-js": "^2.5.4",
+    "mustache": "^3.0.3",
     "rxjs": "~6.5.2",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"

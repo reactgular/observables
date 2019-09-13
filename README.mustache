@@ -1,0 +1,52 @@
+[![Build Status](https://travis-ci.org/reactgular/observables.svg?branch=master)](https://travis-ci.org/reactgular/observables)
+[![Coverage Status](https://coveralls.io/repos/github/reactgular/observables/badge.svg?branch=master)](https://coveralls.io/github/reactgular/observables?branch=master)
+[![npm version](https://badge.fury.io/js/%40reactgular%2Fobservables.svg)](https://badge.fury.io/js/%40reactgular%2Fobservables)
+
+## What is Observables?
+
+Observables is a small Angular library that contains rxjs operators.
+
+## Why another console rxjs library?
+
+I needed somewhere to share common operators that I've created on various projects. I've tried to make these operators are generic and reusable as possible so
+that they can be applied to a wider range of situations.
+
+## Installation
+
+To get started, install the package from npm. The latest version (1.x) supports Angular 8.
+
+```bash
+npm install --save @reactgular/observables
+
+# or if you are using yarn
+yarn add @reactgular/observables
+```
+
+Each operator or utility function can be imported directly from the package path `@reactgular/observables`.
+
+For example;
+
+```typescript
+import {of} from 'rxjs';
+import {distinctStringify} from '@reactgular/observables';
+
+of([1,2,3], [1,2,3], [4,5,6]).pipe(
+  distinctStringify()
+).subscribe(v => console.log(v)); // prints "[1,2,3] [4,5,6]"
+```
+
+# Operators
+
+Here is a list of rxjs operators that you can use from this library.
+
+```typescript
+{{{operators}}}
+```
+
+# Utilities
+
+Here is a list of utility functions that you can use from this library.
+
+```typescript
+{{{utilities}}}
+```
