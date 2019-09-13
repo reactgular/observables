@@ -1,7 +1,7 @@
 import {throttleTimeIf} from './throttle-time-if';
 import {fakeAsync, tick} from '@angular/core/testing';
 import {of, Subject} from 'rxjs';
-import {expect$} from '../../tests/observable.helper';
+import {expect$} from '../tests/observable.helper';
 
 describe(throttleTimeIf.name, () => {
     it('should throttle values', fakeAsync(() => {

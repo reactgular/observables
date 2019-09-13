@@ -1,6 +1,6 @@
 import {disabledWhen} from './disabled-when';
 import {BehaviorSubject, of, Subject} from 'rxjs';
-import {expect$} from '../../tests/observable.helper';
+import {expect$} from '../tests/observable.helper';
 
 describe(disabledWhen.name, () => {
     it('should not emit when disabled', () => {

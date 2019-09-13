@@ -1,6 +1,6 @@
 import {distinctStringify} from './distinct-stringify';
 import {of} from 'rxjs';
-import {expect$} from '../../tests/observable.helper';
+import {expect$} from '../tests/observable.helper';
 
 describe(distinctStringify.name, () => {
     it('should not emit duplicate numbers', () => {

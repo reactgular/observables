@@ -1,6 +1,6 @@
 import {enabledWhen} from './enabled-when';
 import {BehaviorSubject, of, Subject} from 'rxjs';
-import {expect$} from '../../tests/observable.helper';
+import {expect$} from '../tests/observable.helper';
 
 describe(enabledWhen.name, () => {
     it('should emit when enabled', () => {

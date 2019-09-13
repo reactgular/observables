@@ -1,5 +1,5 @@
 import {withMergeMap} from './with-merge-map';
-import {expect$} from '../../tests/observable.helper';
+import {expect$} from '../tests/observable.helper';
 import {of} from 'rxjs';
 
 describe(withMergeMap.name, () => {

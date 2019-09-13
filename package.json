@@ -1,10 +1,35 @@
 {
   "name": "@reactgular/observables",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "description": "Angular library that contains handy rxjs operators.",
   "author": "reactgular.com",
-  "homepage": "https://reactgular.com/",
+  "homepage": "https://github.com/reactgular/observables",
   "license": "MIT",
+  "main": "index.js",
+  "typings": "index.d.ts",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && npm run build:es5 && npm run build:cjs && npm run build:typings",
+    "build:es5": "tsc -p tsconfig.es5.json && rollup -c rollup.config.js",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:typings": "tsc -p tsconfig.typings.json",
+    "test": "jest",
+    "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls",
+    "lint": "tslint -p tsconfig.json",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "postbuild": "./post-build.sh",
+    "readme": "node readme.js"
+  },
+  "keywords": [
+    "rx",
+    "rxjs",
+    "reactivex",
+    "reactive-extensions",
+    "observables",
+    "streams",
+    "stream"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/reactgular/observables"
@@ -12,53 +37,20 @@
   "bugs": {
     "url": "https://github.com/reactgular/observables/issues"
   },
-  "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test --watch=false --code-coverage=true",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
-    "postbuild": "npm run readme && cp README.md dist/README.md",
-    "readme": "node readme.js"
-  },
-  "private": true,
-  "dependencies": {
-    "@angular/common": "~8.0.0",
-    "@angular/compiler": "~8.0.0",
-    "@angular/core": "~8.0.0",
-    "@angular/platform-browser": "~8.0.0",
-    "@angular/platform-browser-dynamic": "~8.0.0",
-    "@angular/router": "~8.0.0",
-    "core-js": "^2.5.4",
-    "mustache": "^3.0.3",
-    "rxjs": "~6.5.2",
-    "tslib": "^1.9.0",
-    "zone.js": "~0.9.1"
+  "peerDependencies": {
+    "rxjs": "^6.0.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.800.1",
-    "@angular-devkit/build-ng-packagr": "~0.800.1",
-    "@angular/cli": "~8.0.1",
-    "@angular/compiler-cli": "~8.0.0",
-    "@angular/language-service": "~8.0.0",
-    "@types/jasmine": "~2.8.8",
-    "@types/jasminewd2": "~2.0.3",
-    "@types/node": "~8.9.4",
-    "codelyzer": "~4.5.0",
-    "jasmine-core": "~2.99.1",
-    "jasmine-spec-reporter": "~4.2.1",
-    "karma": "~4.0.0",
-    "karma-chrome-launcher": "~2.2.0",
-    "karma-coverage-istanbul-reporter": "~2.0.1",
-    "karma-jasmine": "~1.1.2",
-    "karma-jasmine-html-reporter": "^0.2.2",
-    "ng-packagr": "^5.2.0",
-    "protractor": "~5.4.0",
-    "ts-node": "~7.0.0",
-    "tsickle": ">=0.34.0",
-    "tslib": "^1.9.0",
-    "tslint": "~5.11.0",
-    "typescript": "~3.4.5"
+    "@types/jest": "^24.0.18",
+    "coveralls": "^3.0.6",
+    "jest": "^24.9.0",
+    "mustache": "^3.1.0",
+    "rollup": "^1.21.2",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rxjs": "^6.0.0",
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.19.0",
+    "typescript": "^3.6.3"
   }
 }

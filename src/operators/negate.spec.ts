@@ -1,6 +1,6 @@
 import {negate} from './negate';
 import {of} from 'rxjs';
-import {expect$} from '../../tests/observable.helper';
+import {expect$} from '../tests/observable.helper';
 
 describe(negate.name, () => {
     it('should invert boolean values', () => {

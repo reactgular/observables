@@ -4,15 +4,15 @@ import {defaultIfEmpty, distinctUntilChanged, filter, map, withLatestFrom} from 
 /**
  * Disables emitting of values while the passed observable emits true.
  */
-export function disabledWhen<T>(disabled: Observable<boolean>): MonoTypeOperatorFunction<T> {
+export function disabledWhen<T>(disabled$: Observable<boolean>): MonoTypeOperatorFunction<T> {
     return (source: Observable<T>): Observable<T> => {
         return source.pipe(
-            withLatestFrom(disabled.pipe(
-                defaultIfEmpty(false),
-                map(Boolean),
+            withLatestFrom(disabled$.pipe(
+                defaultIfEmpty<boolean>(false),
+                map(v => Boolean(v)),
                 distinctUntilChanged()
             )),
-            filter(([value, disabled]) => !disabled),
+            filter(([, disabled]) => !disabled),
             map(([value]) => value)
         );
     };

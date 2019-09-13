@@ -1,6 +1,6 @@
 {
+  "extends": "tslint:recommended",
   "rulesDirectory": [
-    "codelyzer"
   ],
   "rules": {
     "array-type": false,
@@ -41,7 +41,7 @@
     ],
     "no-empty": false,
     "no-inferrable-types": [
-      true,
+      false,
       "ignore-params"
     ],
     "no-non-null-assertion": true,
@@ -49,6 +49,7 @@
     "no-switch-case-fall-through": true,
     "no-use-before-declare": true,
     "no-var-requires": false,
+    "variable-name": false,
     "object-literal-key-quotes": [
       true,
       "as-needed"
@@ -60,16 +61,8 @@
       "single"
     ],
     "trailing-comma": false,
-    "no-output-on-prefix": true,
-    "use-input-property-decorator": true,
-    "use-output-property-decorator": true,
-    "use-host-property-decorator": true,
-    "no-input-rename": true,
-    "no-output-rename": true,
-    "use-life-cycle-interface": true,
-    "use-pipe-transform-interface": true,
-    "component-class-suffix": true,
-    "directive-class-suffix": true,
-    "no-string-literal": false
+    "use-input-property-decorator": false,
+    "use-output-property-decorator": false,
+    "use-host-property-decorator": false
   }
 }

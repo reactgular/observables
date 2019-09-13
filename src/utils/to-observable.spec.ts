@@ -1,6 +1,6 @@
 import {toObservable} from './to-observable';
 import {isObservable, Observable, of} from 'rxjs';
-import {expect$} from '../../tests/observable.helper';
+import {expect$} from '../tests/observable.helper';
 
 describe(toObservable.name, () => {
     it('should create observable for literal values', () => {

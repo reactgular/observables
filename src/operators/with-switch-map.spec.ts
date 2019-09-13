@@ -1,5 +1,5 @@
 import {withSwitchMap} from './with-switch-map';
-import {expect$} from '../../tests/observable.helper';
+import {expect$} from '../tests/observable.helper';
 import {of} from 'rxjs';
 
 describe(withSwitchMap.name, () => {

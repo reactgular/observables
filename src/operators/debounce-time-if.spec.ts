@@ -1,6 +1,6 @@
 import {fakeAsync, tick} from '@angular/core/testing';
 import {of, Subject} from 'rxjs';
-import {expect$} from '../../tests/observable.helper';
+import {expect$} from '../tests/observable.helper';
 import {debounceTimeIf} from './debounce-time-if';
 
 describe(debounceTimeIf.name, () => {
