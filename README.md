@@ -48,7 +48,7 @@ function debounceTimeIf<T>(cond: boolean, duration: number): MonoTypeOperatorFun
 /**
  * Disables emitting of values while the passed observable emits true.
  */
-function disabledWhen<T>(disabled: Observable<boolean>): MonoTypeOperatorFunction<T>;
+function disabledWhen<T>(disabled$: Observable<boolean>): MonoTypeOperatorFunction<T>;
 
 /**
  * Emits all items emitted by the source Observable that are distinct by comparison using JSON.stringify() on each value.
@@ -64,6 +64,17 @@ function enabledWhen<TType>(enabled: Observable<boolean>): MonoTypeOperatorFunct
  * Emits only falsy values. Identical to filter(v => !v) expect that the observable type is preserved.
  */
 function falsy<T>(): MonoTypeOperatorFunction<T>;
+
+export * from './debounce-time-if';
+export * from './disabled-when';
+export * from './distinct-stringify';
+export * from './enabled-when';
+export * from './falsy';
+export * from './negate';
+export * from './throttle-time-if';
+export * from './truthy';
+export * from './with-merge-map';
+export * from './with-switch-map';
 
 /**
  * Maps values to an inverted boolean.
@@ -83,12 +94,12 @@ function truthy<T>(): MonoTypeOperatorFunction<T>;
 /**
  * Emits the inner observable value with the outer observable value as a pair array.
  */
-function withMergeMap<T, R>(inner: (T: any) => Observable<R>): OperatorFunction<T, [T, R]>;
+function withMergeMap<T, R>(inner: (x: T) => Observable<R>): OperatorFunction<T, [T, R]>;
 
 /**
  * Emits the inner observable value with the outer observable value as a pair array.
  */
-function withSwitchMap<T, R>(inner: (T: any) => Observable<R>): OperatorFunction<T, [T, R]>;
+function withSwitchMap<T, R>(inner: (x: T) => Observable<R>): OperatorFunction<T, [T, R]>;
 ```
 
 # Utilities
@@ -96,6 +107,9 @@ function withSwitchMap<T, R>(inner: (T: any) => Observable<R>): OperatorFunction
 Here is a list of utility functions that you can use from this library.
 
 ```typescript
+export * from './to-observable';
+export * from './window-resize';
+
 /**
  * Converts the parameter to an observable, or returns the value if already an observable.
  */

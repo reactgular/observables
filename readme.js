@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const fs = require('fs');
 const mustache = require('mustache');
 
@@ -21,8 +22,8 @@ const format = (files) => files
   .join('\n')
   .trim();
 
-const operators = format(sort(findFiles('./dist/src/operators', '.ts')));
-const utilities = format(sort(findFiles('./dist/src/utils', '.ts')));
+const operators = format(sort(findFiles('./dist/operators', '.ts')));
+const utilities = format(sort(findFiles('./dist/utils', '.ts')));
 
 const template = fs.readFileSync('./README.mustache', 'utf8');
 const view = mustache.render(template, {operators, utilities});
