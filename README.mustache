@@ -35,7 +35,7 @@ import {windowResize} from '@reactgular/observables';
 import {distinctStringify} from '@reactgular/observables/operators';
 
 windowResize(250).pipe(
-distinctStringify()
+  distinctStringify()
 ).subscribe(v => console.log(v));
 ```
 

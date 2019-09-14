@@ -160,7 +160,7 @@ function contents(features, name, description) {
 }
 
 const sections = [
-  contents(operators, 'Operators', 'Here is a list of rxjs operators that you can use from this library.'),
+  contents(operators, 'Operators', 'Here is a list of observable operators that you can use from this library.'),
   contents(utilities, 'Utilities', 'Here is a list of utility functions that you can use from this library.')
 ];
 // console.log(sections);

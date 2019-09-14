@@ -35,13 +35,13 @@ import {windowResize} from '@reactgular/observables';
 import {distinctStringify} from '@reactgular/observables/operators';
 
 windowResize(250).pipe(
-distinctStringify()
+  distinctStringify()
 ).subscribe(v => console.log(v));
 ```
 
 # Operators
 
-Here is a list of rxjs operators that you can use from this library.
+Here is a list of observable operators that you can use from this library.
 
 Operators | Operators | Operators | Operators
 -----------|-----------|-----------|-----------
