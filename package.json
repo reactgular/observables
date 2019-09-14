@@ -1,6 +1,6 @@
 {
   "name": "@reactgular/observables",
-  "version": "2.0.0",
+  "version": "2.0.0-beta1",
   "description": "Angular library that contains handy rxjs operators.",
   "author": "reactgular.com",
   "homepage": "https://github.com/reactgular/observables",
@@ -16,7 +16,6 @@
     "test": "jest",
     "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls",
     "lint": "tslint -p tsconfig.json",
-    "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
     "postbuild": "./post-build.sh",
     "readme": "node readme.js",

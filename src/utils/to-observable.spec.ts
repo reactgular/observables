@@ -1,12 +1,15 @@
-import {toObservable} from './to-observable';
 import {isObservable, Observable, of} from 'rxjs';
-import {expect$} from '../tests/observable.helper';
+import {finalize, toArray} from 'rxjs/operators';
+import {toObservable} from './to-observable';
 
 describe(toObservable.name, () => {
-    it('should create observable for literal values', () => {
+    it('should create observable for literal values', done => {
         const $ = toObservable('house');
         expect(isObservable($)).toBeTruthy();
-        expect$($).toEqual(['house']);
+        $.pipe(
+            toArray(),
+            finalize(() => done())
+        ).subscribe(v => expect(v).toEqual(['house']));
     });
 
     it('should not modify an observable', () => {
@@ -15,15 +18,21 @@ describe(toObservable.name, () => {
         expect($2).toBe($1);
     });
 
-    it('should emit undefined', () => {
+    it('should emit undefined', done => {
         const $ = toObservable(undefined);
         expect(isObservable($)).toBeTruthy();
-        expect$($).toEqual([undefined]);
+        $.pipe(
+            toArray(),
+            finalize(() => done())
+        ).subscribe(v => expect(v).toEqual([undefined]));
     });
 
-    it('should emit an array', () => {
+    it('should emit an array', done => {
         const $: Observable<number[]> = toObservable([1, 2, 3, 4]);
         expect(isObservable($)).toBeTruthy();
-        expect$($).toEqual([[1, 2, 3, 4]]);
+        $.pipe(
+            toArray(),
+            finalize(() => done())
+        ).subscribe(v => expect(v).toEqual([[1, 2, 3, 4]]));
     });
 });

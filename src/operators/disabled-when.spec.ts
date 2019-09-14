@@ -1,25 +1,33 @@
-import {disabledWhen} from './disabled-when';
 import {BehaviorSubject, of, Subject} from 'rxjs';
-import {expect$} from '../tests/observable.helper';
+import {finalize, toArray} from 'rxjs/operators';
+import {disabledWhen} from './disabled-when';
 
 describe(disabledWhen.name, () => {
-    it('should not emit when disabled', () => {
-        const S1 = of(1, 2, 3, 4, 5).pipe(disabledWhen(of(true)));
-        expect$(S1).toEqual([]);
+    it('should not emit when disabled', done => {
+        of(1, 2, 3, 4, 5).pipe(
+            disabledWhen(of(true)),
+            toArray(),
+            finalize(() => done())
+        ).subscribe(v => expect(v).toEqual([]));
     });
 
-    it('should emit when not disabled', () => {
-        const S1 = of(1, 2, 3, 4, 5).pipe(disabledWhen(of(false)));
-        expect$(S1).toEqual([1, 2, 3, 4, 5]);
+    it('should emit', done => {
+        of(1, 2, 3, 4, 5).pipe(
+            disabledWhen(of(false)),
+            toArray(),
+            finalize(() => done())
+        ).subscribe(v => expect(v).toEqual([1, 2, 3, 4, 5]));
     });
 
-    it('should toggle disabled state', () => {
+    it('should toggle disabled state', done => {
         const disabled$ = new BehaviorSubject(false);
-        const subject$ = new Subject();
-        const S1 = subject$.pipe(disabledWhen(disabled$));
+        const subject$ = new Subject<number>();
 
-        const values = [];
-        S1.subscribe(v => values.push(v));
+        subject$.pipe(
+            disabledWhen(disabled$),
+            toArray(),
+            finalize(() => done())
+        ).subscribe(v => expect(v).toEqual([1, 2, 3, 7, 8, 9]));
 
         subject$.next(1);
         subject$.next(2);
@@ -32,7 +40,6 @@ describe(disabledWhen.name, () => {
         subject$.next(7);
         subject$.next(8);
         subject$.next(9);
-
-        expect(values).toEqual([1, 2, 3, 7, 8, 9]);
+        subject$.complete();
     });
 });
