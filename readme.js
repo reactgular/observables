@@ -116,10 +116,24 @@ const operators = functions(sort(findFiles('src/operators', '.md')));
 // console.log(operators);
 
 const utilities = functions(sort(findFiles('src/utils', '.md')));
+
 // console.log(utilities);
 
-const sections = chunk(operators, 3, false);
-console.log(sections);
+/**
+ * @param {string[]} names
+ * @param {number} size
+ * @returns {[]}
+ */
+function sections(names, size) {
+  const separator = true;
+  const nameLast = names.map(name => ({name, separator}));
+  const chunks = chunk(nameLast, size, {name: '', separator});
+  const markLastTrue = c => c.map((b, i) => ({...b, separator: i !== size - 1}));
+  return chunks.map(c => ({row: markLastTrue(c)}));
+}
+
+const operatorNames = sections(operators.map(s => s.name), 4);
+console.log(operatorNames);
 
 /**
  * Markdown template
@@ -132,7 +146,11 @@ const template = fs.readFileSync('./README.mustache', 'utf8');
  *
  * @type {string}
  */
-const view = mustache.render(template, {operators, utilities});
+const view = mustache.render(template, {
+  operators,
+  utilities,
+  operatorNames
+});
 
 console.log(view);
 

@@ -39,7 +39,11 @@ of([1,2,3], [1,2,3], [4,5,6]).pipe(
 
 Here is a list of rxjs operators that you can use from this library.
 
- (debounceTimeIf)[#debounceTimeIf] |  (disabledWhen)[#disabledWhen] |  (distinctStringify)[#distinctStringify] |  (enabledWhen)[#enabledWhen] |  (falsy)[#falsy] |  (negate)[#negate] |  (throttleTime)[#throttleTime] |  (truthy)[#truthy] |  (withMergeMap)[#withMergeMap] |  (withSwitchMap)[#withSwitchMap] | 
+ Operators | Operators | Operators | Operators
+-----------|-----------|-----------|-----------
+[debounceTimeIf](#debounceTimeIf) | [disabledWhen](#disabledWhen) | [distinctStringify](#distinctStringify) | [enabledWhen](#enabledWhen)
+[falsy](#falsy) | [negate](#negate) | [throttleTime](#throttleTime) | [truthy](#truthy)
+[withMergeMap](#withMergeMap) | [withSwitchMap](#withSwitchMap) | [](#) | [](#)
 
 ## debounceTimeIf
 

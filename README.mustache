@@ -39,7 +39,11 @@ of([1,2,3], [1,2,3], [4,5,6]).pipe(
 
 Here is a list of rxjs operators that you can use from this library.
 
-{{#operators}} ({{name}})[#{{name}}] | {{/operators}}
+ Operators | Operators | Operators | Operators
+-----------|-----------|-----------|-----------
+{{#operatorNames}}
+{{#row}}[{{name}}](#{{name}}){{#separator}} | {{/separator}}{{/row}}
+{{/operatorNames}}
 
 {{#operators}}
 ## {{name}}
