@@ -5,6 +5,6 @@ import {disabledWhen} from './disabled-when';
 /**
  * Enables emitting of values while the passed observable emits true.
  */
-export function enabledWhen<TType>(enabled: Observable<boolean>): MonoTypeOperatorFunction<TType> {
-    return (source: Observable<TType>): Observable<TType> => source.pipe(disabledWhen(enabled.pipe(negate())));
+export function enabledWhen<T>(enabled: Observable<boolean>): MonoTypeOperatorFunction<T> {
+    return (source: Observable<T>): Observable<T> => source.pipe(disabledWhen(enabled.pipe(negate())));
 }

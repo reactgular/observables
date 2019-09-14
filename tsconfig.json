@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "removeComments": true,
+    "removeComments": false,
     "preserveConstEnums": true,
     "sourceMap": true,
     "strictFunctionTypes": true,

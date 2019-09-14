@@ -19,7 +19,8 @@
     "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
     "postbuild": "./post-build.sh",
-    "readme": "node readme.js"
+    "readme": "node readme.js",
+    "jsdoc": "jsdoc dist/bundles/observables.umd.js"
   },
   "keywords": [
     "rx",

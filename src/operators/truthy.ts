@@ -6,6 +6,6 @@ import {filter} from 'rxjs/operators';
  */
 export function truthy<T>(): MonoTypeOperatorFunction<T> {
     return (source: Observable<T>): Observable<T> => source.pipe(
-        filter<T>(Boolean)
+        filter<T>(v => Boolean(v))
     );
 }
