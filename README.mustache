@@ -4,13 +4,16 @@
 
 ## What is Observables?
 
-Observables is a small rxjs library that contains handy operators and utilities.
+Observables is a small Rxjs 6 library that contains handy operators and utilities.
 
 ## Why use this rxjs library?
 
-These operators and utilities are the result doing the same thing frequently with rxjs, and deciding to create
-a library to share these common things across projects. They are based upon my personal experiences, and can honestly
-say that I use this library in every project. I hope you'll find it as handy as I have.
+This library contains operators and utilities that solve some very common problems that I face with Rxjs. Here is
+a quick list of features that I use most often in projects.
+
+- `windowResize()` creates a debounced observable of window size changes.
+- `withSwitchMap()` uses `switchMap()` but emits the outer and inner values.
+- `enabledWhen()` only emits when another observable emits `true`.
 
 ## Installation
 

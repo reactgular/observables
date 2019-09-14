@@ -163,7 +163,7 @@ const sections = [
   contents(operators, 'Operators', 'Here is a list of rxjs operators that you can use from this library.'),
   contents(utilities, 'Utilities', 'Here is a list of utility functions that you can use from this library.')
 ];
-console.log(sections);
+// console.log(sections);
 
 /**
  * Markdown template
@@ -177,7 +177,7 @@ const template = fs.readFileSync('./README.mustache', 'utf8');
  * @type {string}
  */
 const view = mustache.render(template, {sections});
-console.log(view);
+// console.log(view);
 
 /**
  * Writes the README.md file.
