@@ -5,11 +5,12 @@ import {debounceTimeIf} from '../operators/debounce-time-if';
 /**
  * Emits changes in the window size with optional debounce time.
  */
-export function windowResize(debounce?: number): Observable<{ innerWidth: number, innerHeight: number }> {
-    return fromEvent(window, 'resize').pipe(
-        startWith({innerWidth: window.innerWidth, innerHeight: window.innerHeight}),
+export function windowResize(debounce?: number, wnd?: Window): Observable<{ innerWidth: number, innerHeight: number }> {
+    const w = wnd || window;
+    return fromEvent(w, 'resize').pipe(
+        startWith({innerWidth: w.innerWidth, innerHeight: w.innerHeight}),
         debounceTimeIf(Boolean(debounce), debounce),
-        mapTo(window),
+        mapTo(w),
         map(({innerWidth, innerHeight}) => ({innerWidth, innerHeight}))
     );
 }
