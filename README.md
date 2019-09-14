@@ -53,7 +53,7 @@ Conditionally apply a [debounceTime](https://rxjs.dev/api/operators/debounceTime
 debounceTimeIf<T>(cond: boolean, duration: number): MonoTypeOperatorFunction<T>
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/debounce-time-if.ts)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/debounce-time-if.ts)] [[up](#operators)]
 
 ## disabledWhen
 
@@ -63,7 +63,7 @@ Disables emitting of values while the passed observable emits true.
 disabledWhen<T>(disabled$: Observable<boolean>): MonoTypeOperatorFunction<T>
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/disabled-when.ts)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/disabled-when.ts)] [[up](#operators)]
 
 ## distinctStringify
 
@@ -73,7 +73,7 @@ Emits all items emitted by the source Observable that are distinct by comparison
 distinctStringify<T>(): MonoTypeOperatorFunction<T>
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/distinct-stringify.ts)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/distinct-stringify.ts)] [[up](#operators)]
 
 ## enabledWhen
 
@@ -83,7 +83,7 @@ Enables emitting of values while the passed observable emits `true`.
 enabledWhen<T>(enabled: Observable<boolean>): MonoTypeOperatorFunction<T>
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/enabled-when.ts)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/enabled-when.ts)] [[up](#operators)]
 
 ## falsy
 
@@ -93,7 +93,7 @@ Emits only *falsy* values. Performs a `filter(v => !v)` operator internally.
 falsy<T>(): MonoTypeOperatorFunction<T>
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/falsy.ts)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/falsy.ts)] [[up](#operators)]
 
 ## negate
 
@@ -103,7 +103,7 @@ Maps *truthy* values to `false`, and *falsy* values to `true`. Performs a `map(v
 negate(): MonoTypeOperatorFunction<boolean>
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/negate.ts)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/negate.ts)] [[up](#operators)]
 
 ## throttleTime
 
@@ -113,7 +113,7 @@ Conditionally apply a [throttleTime](https://rxjs.dev/api/operators/throttleTime
 throttleTimeIf<T>(cond: boolean, duration: number): MonoTypeOperatorFunction<T>
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/throttle-time.ts)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/throttle-time.ts)] [[up](#operators)]
 
 ## truthy
 
@@ -126,7 +126,7 @@ generic type.
 truthy<T>(): MonoTypeOperatorFunction<T>
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/truthy.ts)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/truthy.ts)] [[up](#operators)]
 
 ## withMergeMap
 
@@ -137,7 +137,7 @@ the value of both the outer and inner observables as `Observable<[outer, inner]>
 withMergeMap<T, R>(inner: (x: T) => Observable<R>): OperatorFunction<T, [T, R]>
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/with-merge-map.ts)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/with-merge-map.ts)] [[up](#operators)]
 
 ## withSwitchMap
 
@@ -148,5 +148,5 @@ the value of both the outer and inner observables as `Observable<[outer, inner]>
 withSwitchMap<T, R>(inner: (x: T) => Observable<R>): OperatorFunction<T, [T, R]>
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/with-switch-map.ts)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/with-switch-map.ts)] [[up](#operators)]
 
