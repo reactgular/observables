@@ -115,7 +115,7 @@ falsy<T>(): MonoTypeOperatorFunction<T>
 Maps *truthy* values to `false`, and *falsy* values to `true`. Performs a `map(v => !v)` internally.
 
 ```typescript
-negate(): MonoTypeOperatorFunction<boolean>
+negate<T>(): OperatorFunction<T, boolean>
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/negate.ts)] [[up](#operators)]
