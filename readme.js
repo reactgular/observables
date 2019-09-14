@@ -95,13 +95,15 @@ const fileToName = fileName => path.basename(fileName)
  * matching Markdown file.
  *
  * @param {string[]} files
+ * @param {string} up
  * @returns {Array<{file: string, name:string, url: string, content: string}>}
  */
-const features = (files) => files
+const features = (files, up) => files
   .map(file => ({
     file,
     name: fileToName(file),
     url: 'https://github.com/reactgular/observables/blob/master/' + file.replace(/\.md$/, '.ts'),
+    up,
     content: readFile(file)
   }));
 
@@ -138,8 +140,8 @@ function toc(names, size) {
   return chunks.map(c => ({row: markLastTrue(c)}));
 }
 
-const operators = features(sort(findFiles('src/operators', '.md')));
-const utilities = features(sort(findFiles('src/utils', '.md')));
+const operators = features(sort(findFiles('src/operators', '.md')), 'operators');
+const utilities = features(sort(findFiles('src/utils', '.md')), 'utilities');
 
 /**
  * Defines a section that details all the features for that section.

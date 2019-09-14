@@ -4,35 +4,36 @@
 
 ## What is Observables?
 
-Observables is a small Angular library that contains rxjs operators.
+Observables is a small rxjs library that contains handy operators and utilities.
 
-## Why another console rxjs library?
+## Why use this rxjs library?
 
-I needed somewhere to share common operators that I've created on various projects. I've tried to make these operators are generic and reusable as possible so
-that they can be applied to a wider range of situations.
+These operators and utilities are the result doing the same thing frequently with rxjs, and deciding to create
+a library to share these common things across projects. They are based upon my personal experiences, and can honestly
+say that I use this library in every project. I hope you'll find it as handy as I have.
 
 ## Installation
 
-To get started, install the package from npm. The latest version (1.x) supports Angular 8.
+To get started, install the package from npm.
 
 ```bash
-npm install --save @reactgular/observables
-
-# or if you are using yarn
-yarn add @reactgular/observables
+npm install @reactgular/observables
 ```
 
-Each operator or utility function can be imported directly from the package path `@reactgular/observables`.
+## Usage
+
+Utility functions are imported directly from the package path `@reactgular/observables`, but operators are
+imported from `@reactgular/observables/operators`.
 
 For example;
 
 ```typescript
-import {of} from 'rxjs';
-import {distinctStringify} from '@reactgular/observables';
+import {windowResize} from '@reactgular/observables';
+import {distinctStringify} from '@reactgular/observables/operators';
 
-of([1,2,3], [1,2,3], [4,5,6]).pipe(
-  distinctStringify()
-).subscribe(v => console.log(v)); // prints "[1,2,3] [4,5,6]"
+windowResize(250).pipe(
+distinctStringify()
+).subscribe(v => console.log(v));
 ```
 
 {{#sections}}
@@ -55,7 +56,7 @@ Operators | Operators | Operators | Operators
 ### {{name}}
 
 {{{content}}}
-[[source]({{{url}}})] [[up](#operators)]
+[[source]({{{url}}})] [[up](#{{up}})]
 
 {{/features}}
 {{/sections}}
