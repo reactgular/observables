@@ -35,20 +35,27 @@ of([1,2,3], [1,2,3], [4,5,6]).pipe(
 ).subscribe(v => console.log(v)); // prints "[1,2,3] [4,5,6]"
 ```
 
-# Operators
+{{#sections}}
+# {{name}}
 
-Here is a list of rxjs operators that you can use from this library.
+{{description}}
 
- Operators | Operators | Operators | Operators
+Operators | Operators | Operators | Operators
 -----------|-----------|-----------|-----------
-{{#operatorNames}}
+{{#toc}}
 {{#row}}[{{name}}](#{{name}}){{#separator}} | {{/separator}}{{/row}}
-{{/operatorNames}}
+{{/toc}}
 
-{{#operators}}
-## {{name}}
+{{/sections}}
+
+{{#sections}}
+## {{name}} List
+
+{{#features}}
+### {{name}}
 
 {{{content}}}
 [[source]({{{url}}})] [[up](#operators)]
 
-{{/operators}}
+{{/features}}
+{{/sections}}

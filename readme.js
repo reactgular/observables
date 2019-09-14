@@ -91,10 +91,13 @@ const fileToName = fileName => path.basename(fileName)
   .replace(/-\w/g, (a, b) => (a[1] + '').toUpperCase());
 
 /**
+ * Creates an object for each feature found in a directory. A feature is a TypeScript file with a
+ * matching Markdown file.
+ *
  * @param {string[]} files
- * @returns {{file: string, name:string, url: string, content: string}}
+ * @returns {Array<{file: string, name:string, url: string, content: string}>}
  */
-const functions = (files) => files
+const features = (files) => files
   .map(file => ({
     file,
     name: fileToName(file),
@@ -102,6 +105,14 @@ const functions = (files) => files
     content: readFile(file)
   }));
 
+/**
+ * Slices up the array into chunks
+ *
+ * @param {Array} arr
+ * @param {number} size
+ * @param {any} def
+ * @returns {Array}
+ */
 function chunk(arr, size = 3, def = undefined) {
   const t = [];
   const defs = Array(size).fill(def);
@@ -112,19 +123,14 @@ function chunk(arr, size = 3, def = undefined) {
   return t;
 }
 
-const operators = functions(sort(findFiles('src/operators', '.md')));
-// console.log(operators);
-
-const utilities = functions(sort(findFiles('src/utils', '.md')));
-
-// console.log(utilities);
-
 /**
+ * Generates the table of contents structure.
+ *
  * @param {string[]} names
  * @param {number} size
- * @returns {[]}
+ * @returns {Array<{row:Array<{name:string, separator: boolean}>}>}
  */
-function sections(names, size) {
+function toc(names, size) {
   const separator = true;
   const nameLast = names.map(name => ({name, separator}));
   const chunks = chunk(nameLast, size, {name: '', separator});
@@ -132,8 +138,30 @@ function sections(names, size) {
   return chunks.map(c => ({row: markLastTrue(c)}));
 }
 
-const operatorNames = sections(operators.map(s => s.name), 4);
-console.log(operatorNames);
+const operators = features(sort(findFiles('src/operators', '.md')));
+const utilities = features(sort(findFiles('src/utils', '.md')));
+
+/**
+ * Defines a section that details all the features for that section.
+ *
+ * @param {Array<{file: string, name:string, url: string, content: string}>} features
+ * @param {string} name
+ * @param {string} description
+ */
+function contents(features, name, description) {
+  return {
+    name,
+    description,
+    toc: toc(features.map(s => s.name), 4),
+    features
+  };
+}
+
+const sections = [
+  contents(operators, 'Operators', 'Here is a list of rxjs operators that you can use from this library.'),
+  contents(utilities, 'Utilities', 'Here is a list of utility functions that you can use from this library.')
+];
+console.log(sections);
 
 /**
  * Markdown template
@@ -146,12 +174,7 @@ const template = fs.readFileSync('./README.mustache', 'utf8');
  *
  * @type {string}
  */
-const view = mustache.render(template, {
-  operators,
-  utilities,
-  operatorNames
-});
-
+const view = mustache.render(template, {sections});
 console.log(view);
 
 /**
