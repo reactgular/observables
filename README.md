@@ -45,9 +45,9 @@ Here is a list of observable operators that you can use from this library.
 
 Operators | Operators | Operators | Operators
 -----------|-----------|-----------|-----------
-[debounceTimeIf](#) | [disabledWhen](#) | [distinctStringify](#) | [enabledWhen](#)
-[falsy](#) | [negate](#) | [throttleTime](#) | [truthy](#)
-[withMergeMap](#) | [withSwitchMap](#) | [](#) | [](#)
+[debounceTimeIf](#debouncetimeif) | [disabledWhen](#disabledwhen) | [distinctStringify](#distinctstringify) | [enabledWhen](#enabledwhen)
+[falsy](#falsy) | [negate](#negate) | [throttleTime](#throttletime) | [truthy](#truthy)
+[withMergeMap](#withmergemap) | [withSwitchMap](#withswitchmap) | [](#) | [](#)
 
 # Utilities
 
@@ -55,7 +55,7 @@ Here is a list of utility functions that you can use from this library.
 
 Operators | Operators | Operators | Operators
 -----------|-----------|-----------|-----------
-[toObservable](#) | [windowResize](#) | [](#) | [](#)
+[toObservable](#toobservable) | [windowResize](#windowresize) | [](#) | [](#)
 
 
 ## Operators List

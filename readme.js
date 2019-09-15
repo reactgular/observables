@@ -113,7 +113,7 @@ const features = (files, up) => files
  *
  * @param {Array} arr
  * @param {number} size
- * @param {any} def
+ * @param {*} def
  * @returns {Array}
  */
 function chunk(arr, size = 3, def = undefined) {
@@ -135,10 +135,10 @@ function chunk(arr, size = 3, def = undefined) {
  */
 function toc(names, size) {
   const separator = true;
-  const nameLast = names.map(name => ({name, separator}));
-  const chunks = chunk(nameLast, size, {name: '', separator});
-  const markLastTrue = c => c.map((b, i) => ({...b, separator: i !== size - 1}));
-  return chunks.map(c => ({row: markLastTrue(c)}));
+  const columns = names.map(name => ({name, id: name.toLowerCase(), separator}));
+  const chunks = chunk(columns, size, {name: '', id: '', separator});
+  const hideLastSeparator = c => c.map((b, i) => ({...b, separator: i !== size - 1}));
+  return chunks.map(c => ({row: hideLastSeparator(c)}));
 }
 
 const operators = features(sort(findFiles('src/operators', '.md')), 'operators');
