@@ -47,8 +47,8 @@ Here is a list of observable operators that you can use from this library.
 Operators | Operators | Operators | Operators
 -----------|-----------|-----------|-----------
 [counter](#counter) | [disabledWhen](#disabledwhen) | [distinctStringify](#distinctstringify) | [enabledWhen](#enabledwhen)
-[falsy](#falsy) | [ifOp](#ifop) | [negate](#negate) | [truthy](#truthy)
-[withMergeMap](#withmergemap) | [withSwitchMap](#withswitchmap) | [](#) | [](#)
+[falsy](#falsy) | [ifOp](#ifop) | [negate](#negate) | [pluckDistinct](#pluckdistinct)
+[truthy](#truthy) | [withMergeMap](#withmergemap) | [withSwitchMap](#withswitchmap) | [](#)
 
 # Utilities
 
@@ -167,6 +167,33 @@ negate<T>(): OperatorFunction<T, boolean>
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/negate.ts)] [[up](#operators)]
+
+----
+### pluckDistinct
+
+Maps each source value (an object) to its specified nest property,
+and only emits distinct changes. It is the same as applying a [pluck()](https://rxjs.dev/api/operators/pluck)
+followed by a [distinctUntilChanged()](https://rxjs.dev/api/operators/distinctUntilChanged).
+
+```typescript
+function pluckDistinct<T, R>(...properties: string[]): OperatorFunction<T, R>
+```
+
+Example:
+
+```typescript
+from([
+    {name: 'John Smith'},
+    {name: 'John Smith'},
+    {name: 'Jane Doe'},
+    {name: 'Jane Doe'}
+]).pipe(
+    pluckDistinct('name'),
+    toArray()
+).subscribe(v => console.log(v)); // prints ['John Smith', 'Jane Doe']
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/pluck-distinct.ts)] [[up](#operators)]
 
 ----
 ### truthy
