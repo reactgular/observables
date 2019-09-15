@@ -26,59 +26,9 @@ const sort = (arr) => (arr.sort(), arr);
  * Reads the contents of a file and returns an array of each line.
  *
  * @param {string} file
- * @returns {string[]}
- */
-const readFile = file => fs.readFileSync(file, 'utf8').replace(/\r/g, '');
-
-/**
- * Removes lines that start with import.
- *
- * @param {string[]} lines
- * @returns {string[]}
- */
-// const stripImports = lines => lines.filter(l => !l.startsWith('import')).filter(l => Boolean(l));
-
-/**
- * Removes the "export declare " prefix from lines.
- *
- * @param {string[]} lines
- * @returns {string[]}
- */
-// const stripExports = lines => lines.map(l => l.replace(/^export declare /, ''));
-
-/**
- * Extracts the function names
- *
- * @param {string[]} lines
- * @returns {string[]}
- */
-// const extractFunctionName = lines => lines
-//   .filter(l => l.startsWith('export declare function '))
-//   .map(l => l.replace(/^export declare function /, ''))
-//   .map(l => l.replace(/[^\w].*/, '').trim());
-
-/**
- * Appends a blank line to the array.
- *
- * @param {string[]} lines
- * @returns {string[]}
- */
-// const appendBlankLine = lines => ([...lines, '']);
-
-/**
- * Concat all the files into a single string.
- *
- * @param {string[]} files
  * @returns {string}
  */
-// const format = (files) => files
-//   .map(readFile)
-//   .map(stripImports)
-//   .map(stripExports)
-//   .map(appendBlankLine)
-//   .reduce((acc, next) => [...acc, ...next], [])
-//   .join('\n')
-//   .trim();
+const readFile = file => fs.readFileSync(file, 'utf8').replace(/\r/g, '');
 
 /**
  * Converts the filename to the function name.
