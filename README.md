@@ -56,7 +56,7 @@ Here is a list of utility functions that you can use from this library.
 
 Operators | Operators | Operators | Operators
 -----------|-----------|-----------|-----------
-[toObservable](#toobservable) | [windowResize](#windowresize) | [](#) | [](#)
+[forkJoinFirst](#forkjoinfirst) | [toObservable](#toobservable) | [windowResize](#windowresize) | [](#)
 
 
 ## Operators List
@@ -236,6 +236,18 @@ withSwitchMap<T, R>(inner: (x: T) => Observable<R>): OperatorFunction<T, [T, R]>
 ----
 ## Utilities List
 
+### forkJoinFirst
+
+Accepts a collection of observables, and emits the first value from
+all observables as a single value.
+
+Observables can be an `Array` or an `Object` map of observables.
+
+> If an inner observable never emits, then `forkJoinFirst` will never emit a value.
+
+[[source](https://github.com/reactgular/observables/blob/master/src/utils/fork-join-first.ts)] [[up](#utilities)]
+
+----
 ### toObservable
 
 Converts the parameter to an observable, or returns the value if already an observable.
