@@ -100,6 +100,7 @@ const fileToName = fileName => path.basename(fileName)
  */
 const features = (files, up) => files
   .map(file => ({
+    id: fileToName(file).toLowerCase(),
     file,
     name: fileToName(file),
     url: 'https://github.com/reactgular/observables/blob/master/' + file.replace(/\.md$/, '.ts'),
