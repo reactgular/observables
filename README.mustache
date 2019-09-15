@@ -4,49 +4,62 @@
 
 ## What is Observables?
 
-Observables is a small Angular library that contains rxjs operators.
+Observables is a small Rxjs 6 library that contains handy operators and utilities.
 
-## Why another console rxjs library?
+## Why use this rxjs library?
 
-I needed somewhere to share common operators that I've created on various projects. I've tried to make these operators are generic and reusable as possible so
-that they can be applied to a wider range of situations.
+This library contains operators and utilities that solve some very common problems that I face with Rxjs. Here is
+a quick list of features that I use most often in projects.
+
+- `windowResize()` creates a debounced observable of window size changes.
+- `withSwitchMap()` uses `switchMap()` but emits the outer and inner values.
+- `enabledWhen()` only emits when another observable emits `true`.
 
 ## Installation
 
-To get started, install the package from npm. The latest version (1.x) supports Angular 8.
+To get started, install the package from npm.
 
 ```bash
-npm install --save @reactgular/observables
-
-# or if you are using yarn
-yarn add @reactgular/observables
+npm install @reactgular/observables
 ```
 
-Each operator or utility function can be imported directly from the package path `@reactgular/observables`.
+## Usage
+
+Utility functions are imported directly from the package path `@reactgular/observables`, but operators are
+imported from `@reactgular/observables/operators`.
 
 For example;
 
 ```typescript
-import {of} from 'rxjs';
-import {distinctStringify} from '@reactgular/observables';
+import {windowResize} from '@reactgular/observables';
+import {distinctStringify} from '@reactgular/observables/operators';
 
-of([1,2,3], [1,2,3], [4,5,6]).pipe(
+windowResize(250).pipe(
   distinctStringify()
-).subscribe(v => console.log(v)); // prints "[1,2,3] [4,5,6]"
+).subscribe(v => console.log(v));
 ```
 
-# Operators
+{{#sections}}
+# {{name}}
 
-Here is a list of rxjs operators that you can use from this library.
+{{description}}
 
-```typescript
-{{{operators}}}
-```
+Operators | Operators | Operators | Operators
+-----------|-----------|-----------|-----------
+{{#toc}}
+{{#row}}[{{name}}](#{{name}}){{#separator}} | {{/separator}}{{/row}}
+{{/toc}}
 
-# Utilities
+{{/sections}}
 
-Here is a list of utility functions that you can use from this library.
+{{#sections}}
+## {{name}} List
 
-```typescript
-{{{utilities}}}
-```
+{{#features}}
+### {{name}}
+
+{{{content}}}
+[[source]({{{url}}})] [[up](#{{up}})]
+
+{{/features}}
+{{/sections}}

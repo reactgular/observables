@@ -4,108 +4,186 @@
 
 ## What is Observables?
 
-Observables is a small Angular library that contains rxjs operators.
+Observables is a small Rxjs 6 library that contains handy operators and utilities.
 
-## Why another console rxjs library?
+## Why use this rxjs library?
 
-I needed somewhere to share common operators that I've created on various projects. I've tried to make these operators are generic and reusable as possible so
-that they can be applied to a wider range of situations.
+This library contains operators and utilities that solve some very common problems that I face with Rxjs. Here is
+a quick list of features that I use most often in projects.
+
+- `windowResize()` creates a debounced observable of window size changes.
+- `withSwitchMap()` uses `switchMap()` but emits the outer and inner values.
+- `enabledWhen()` only emits when another observable emits `true`.
 
 ## Installation
 
-To get started, install the package from npm. The latest version (1.x) supports Angular 8.
+To get started, install the package from npm.
 
 ```bash
-npm install --save @reactgular/observables
-
-# or if you are using yarn
-yarn add @reactgular/observables
+npm install @reactgular/observables
 ```
 
-Each operator or utility function can be imported directly from the package path `@reactgular/observables`.
+## Usage
+
+Utility functions are imported directly from the package path `@reactgular/observables`, but operators are
+imported from `@reactgular/observables/operators`.
 
 For example;
 
 ```typescript
-import {of} from 'rxjs';
-import {distinctStringify} from '@reactgular/observables';
+import {windowResize} from '@reactgular/observables';
+import {distinctStringify} from '@reactgular/observables/operators';
 
-of([1,2,3], [1,2,3], [4,5,6]).pipe(
+windowResize(250).pipe(
   distinctStringify()
-).subscribe(v => console.log(v)); // prints "[1,2,3] [4,5,6]"
+).subscribe(v => console.log(v));
 ```
 
 # Operators
 
-Here is a list of rxjs operators that you can use from this library.
+Here is a list of observable operators that you can use from this library.
 
-```typescript
-/**
- * Conditionally apply a debounce time operator.
- */
-function debounceTimeIf<T>(cond: boolean, duration: number): MonoTypeOperatorFunction<T>;
-
-/**
- * Disables emitting of values while the passed observable emits true.
- */
-function disabledWhen<T>(disabled: Observable<boolean>): MonoTypeOperatorFunction<T>;
-
-/**
- * Emits all items emitted by the source Observable that are distinct by comparison using JSON.stringify() on each value.
- */
-function distinctStringify<T>(): MonoTypeOperatorFunction<T>;
-
-/**
- * Enables emitting of values while the passed observable emits true.
- */
-function enabledWhen<TType>(enabled: Observable<boolean>): MonoTypeOperatorFunction<TType>;
-
-/**
- * Emits only falsy values. Identical to filter(v => !v) expect that the observable type is preserved.
- */
-function falsy<T>(): MonoTypeOperatorFunction<T>;
-
-/**
- * Maps values to an inverted boolean.
- */
-function negate(): MonoTypeOperatorFunction<boolean>;
-
-/**
- * Conditionally apply a throttle time operator.
- */
-function throttleTimeIf<T>(cond: boolean, duration: number): MonoTypeOperatorFunction<T>;
-
-/**
- * Emits only truthy values. Identical to filter(Boolean) expect that the observable type is preserved.
- */
-function truthy<T>(): MonoTypeOperatorFunction<T>;
-
-/**
- * Emits the inner observable value with the outer observable value as a pair array.
- */
-function withMergeMap<T, R>(inner: (T: any) => Observable<R>): OperatorFunction<T, [T, R]>;
-
-/**
- * Emits the inner observable value with the outer observable value as a pair array.
- */
-function withSwitchMap<T, R>(inner: (T: any) => Observable<R>): OperatorFunction<T, [T, R]>;
-```
+Operators | Operators | Operators | Operators
+-----------|-----------|-----------|-----------
+[debounceTimeIf](#debounceTimeIf) | [disabledWhen](#disabledWhen) | [distinctStringify](#distinctStringify) | [enabledWhen](#enabledWhen)
+[falsy](#falsy) | [negate](#negate) | [throttleTime](#throttleTime) | [truthy](#truthy)
+[withMergeMap](#withMergeMap) | [withSwitchMap](#withSwitchMap) | [](#) | [](#)
 
 # Utilities
 
 Here is a list of utility functions that you can use from this library.
 
-```typescript
-/**
- * Converts the parameter to an observable, or returns the value if already an observable.
- */
-function toObservable<T>(value: T | Observable<T>): Observable<T>;
+Operators | Operators | Operators | Operators
+-----------|-----------|-----------|-----------
+[toObservable](#toObservable) | [windowResize](#windowResize) | [](#) | [](#)
 
-/**
- * Emits changes in the window size with optional debounce time.
- */
-function windowResize(debounce?: number): Observable<{
-    innerWidth: number;
-    innerHeight: number;
-}>;
+
+## Operators List
+
+### debounceTimeIf
+
+Conditionally apply a [debounceTime](https://rxjs.dev/api/operators/debounceTime) operator.
+
+```typescript
+debounceTimeIf<T>(cond: boolean, duration: number): MonoTypeOperatorFunction<T>
 ```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/debounce-time-if.ts)] [[up](#operators)]
+
+### disabledWhen
+
+Disables emitting of values while the passed observable emits true.
+
+```typescript
+disabledWhen<T>(disabled$: Observable<boolean>): MonoTypeOperatorFunction<T>
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/disabled-when.ts)] [[up](#operators)]
+
+### distinctStringify
+
+Emits all items emitted by the source Observable that are distinct by comparison using `JSON.stringify()` on each value.
+
+```typescript
+distinctStringify<T>(): MonoTypeOperatorFunction<T>
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/distinct-stringify.ts)] [[up](#operators)]
+
+### enabledWhen
+
+Enables emitting of values while the passed observable emits `true`.
+
+```typescript
+enabledWhen<T>(enabled: Observable<boolean>): MonoTypeOperatorFunction<T>
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/enabled-when.ts)] [[up](#operators)]
+
+### falsy
+
+Emits only *falsy* values. Performs a `filter(v => !v)` operator internally.
+
+```typescript
+falsy<T>(): MonoTypeOperatorFunction<T>
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/falsy.ts)] [[up](#operators)]
+
+### negate
+
+Maps *truthy* values to `false`, and *falsy* values to `true`. Performs a `map(v => !v)` internally.
+
+```typescript
+negate<T>(): OperatorFunction<T, boolean>
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/negate.ts)] [[up](#operators)]
+
+### throttleTime
+
+Conditionally apply a [throttleTime](https://rxjs.dev/api/operators/throttleTime) operator.
+
+```typescript
+throttleTimeIf<T>(cond: boolean, duration: number): MonoTypeOperatorFunction<T>
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/throttle-time.ts)] [[up](#operators)]
+
+### truthy
+
+Emits only truthy values. This operator is an alias for `filter(v => Boolean(v))`, but most people write
+`filter(Boolean)` because it's shorter. The problem with using `filter(Boolean)` is that the observable
+type is changed to `Boolean`. So using `truthy()` is a shorter alias for the longer form that persists the
+generic type. 
+
+```typescript
+truthy<T>(): MonoTypeOperatorFunction<T>
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/truthy.ts)] [[up](#operators)]
+
+### withMergeMap
+
+Applies a [mergeMap](https://rxjs.dev/api/operators/mergeMap) to the outer observable, and maps the inner observable to an array that contains
+the value of both the outer and inner observables as `Observable<[outer, inner]>`.
+
+```typescript
+withMergeMap<T, R>(inner: (x: T) => Observable<R>): OperatorFunction<T, [T, R]>
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/with-merge-map.ts)] [[up](#operators)]
+
+### withSwitchMap
+
+Applies a [switchMap](https://rxjs.dev/api/operators/switchMap) to the outer observable, and maps the inner observable to an array that contains
+the value of both the outer and inner observables as `Observable<[outer, inner]>`.
+
+```typescript
+withSwitchMap<T, R>(inner: (x: T) => Observable<R>): OperatorFunction<T, [T, R]>
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/with-switch-map.ts)] [[up](#operators)]
+
+## Utilities List
+
+### toObservable
+
+Converts the parameter to an observable, or returns the value if already an observable.
+
+```typescript
+toObservable<T>(value: T | Observable<T>): Observable<T>
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/utils/to-observable.ts)] [[up](#utilities)]
+
+### windowResize
+
+Emits changes in the window size with optional debounce time.
+
+```typescript
+windowResize(debounce?: number, wnd?: Window): Observable<{ innerWidth: number, innerHeight: number }>
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/utils/window-resize.ts)] [[up](#utilities)]
+
