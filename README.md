@@ -56,7 +56,7 @@ Here is a list of utility functions that you can use from this library.
 
 Operators | Operators | Operators | Operators
 -----------|-----------|-----------|-----------
-[toObservable](#toobservable) | [windowResize](#windowresize) | [](#) | [](#)
+[combineEarliest](#combineearliest) | [combineFirst](#combinefirst) | [toObservable](#toobservable) | [windowResize](#windowresize)
 
 
 ## Operators List
@@ -236,6 +236,49 @@ withSwitchMap<T, R>(inner: (x: T) => Observable<R>): OperatorFunction<T, [T, R]>
 ----
 ## Utilities List
 
+### combineEarliest
+
+Whenever any input observable emits a value, it computes a formula using the latest
+values from all the inputs, if any input has not yet emitted a value then `undefined`
+is used instead, and the observable emits an array of all those values.
+
+Unlike [combineLatest()](https://rxjs.dev/api/index/function/combineLatest) which does not emit a value until
+all observables emits at least one value. The `combineEarliest()` emits immediately upon the
+first observable that emits a value substituting `undefined` for any awaiting values from the
+other observables.
+
+```typescript
+function combineEarliest<O extends Observable<any>, S, R>(observables: O[], substitute?: S): Observable<R>
+``` 
+
+[[source](https://github.com/reactgular/observables/blob/master/src/utils/combine-earliest.ts)] [[up](#utilities)]
+
+----
+### combineFirst
+
+When all observables have emitted their first value, then emit an array of those values.
+
+This operator is the opposite of [combineLatest()](https://rxjs.dev/api/index/function/combineLatest).
+
+> Be aware that `combineFirst` will not emit an inital value until each observable emits a first value.
+
+```typescript
+function combineFirst<O extends Observable<any>, R>(...observables: O[]): Observable<R>
+```
+
+Example:
+
+```typescript
+combineFirst([
+    of(1, 2, 3, 4),
+    of(5, 6, 7, 8),
+    of(9, 10, 11, 12)
+]).subscribe(v => console.log(v)); // prints [1, 5, 9]
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/utils/combine-first.ts)] [[up](#utilities)]
+
+----
 ### toObservable
 
 Converts the parameter to an observable, or returns the value if already an observable.
