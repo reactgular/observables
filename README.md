@@ -46,9 +46,9 @@ Here is a list of observable operators that you can use from this library.
 
 Operators | Operators | Operators | Operators
 -----------|-----------|-----------|-----------
-[disabledWhen](#disabledwhen) | [distinctStringify](#distinctstringify) | [enabledWhen](#enabledwhen) | [falsy](#falsy)
-[ifOp](#ifop) | [negate](#negate) | [truthy](#truthy) | [withMergeMap](#withmergemap)
-[withSwitchMap](#withswitchmap) | [](#) | [](#) | [](#)
+[counter](#counter) | [disabledWhen](#disabledwhen) | [distinctStringify](#distinctstringify) | [enabledWhen](#enabledwhen)
+[falsy](#falsy) | [ifOp](#ifop) | [negate](#negate) | [truthy](#truthy)
+[withMergeMap](#withmergemap) | [withSwitchMap](#withswitchmap) | [](#) | [](#)
 
 # Utilities
 
@@ -61,6 +61,26 @@ Operators | Operators | Operators | Operators
 
 ## Operators List
 
+### counter
+
+Increments a counter for each emitted value.
+
+```typescript
+function counter<T>(): OperatorFunction<T, [number, T]>
+```
+
+Example:
+
+```typescript
+of('a', 'b', 'c', 'd', 'e').pipe(
+    counter(),
+    toArray()
+).subscribe(v => console.log(v)); // prints  [[0, 'a'], [1, 'b'], [2, 'c'], [3, 'd'], [4, 'e']]    
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/counter.ts)] [[up](#operators)]
+
+----
 ### disabledWhen
 
 Disables emitting of values while the passed observable emits true.
