@@ -5,6 +5,7 @@ export * from './enabled-when';
 export * from './falsy';
 export * from './if-op';
 export * from './negate';
+export * from './pluck-distinct';
 export * from './truthy';
 export * from './with-merge-map';
 export * from './with-switch-map';

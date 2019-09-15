@@ -2,7 +2,7 @@ import {MonoTypeOperatorFunction, Observable} from 'rxjs';
 import {distinctUntilChanged} from 'rxjs/operators';
 
 /**
- * Emits all items emitted by the source Observable that are distinct by comparison using JSON.stringify() on each value.
+ * Emits all items emitted by the source Observable that are distinct by comparison using `JSON.stringify()` on each value.
  */
 export function distinctStringify<T>(): MonoTypeOperatorFunction<T> {
     return (source: Observable<T>): Observable<T> => {
