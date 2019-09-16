@@ -8,7 +8,7 @@ When the *status* property is:
 - `"error"` the *value* is the caught error.
 
 ```typescript
-function trackStatus<T, S>(start?: S): OperatorFunction<T, TrackStatus<T | S>>
+trackStatus<T, S>(start?: S): OperatorFunction<T, TrackStatus<T | S>>
 ```
 
 Example:

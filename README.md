@@ -131,7 +131,7 @@ Apply an operator based on a condition. This operator only adds another operator
 condition is *true*. When the condition is *false* the source observable is not modified.
 
 ```typescript
-function ifOp<T, R>(cond: boolean, operator: OperatorFunction<T, R>): OperatorFunction<T, T | R>
+ifOp<T, R>(cond: boolean, operator: OperatorFunction<T, R>): OperatorFunction<T, T | R>
 ```
 
 Examples:
@@ -139,7 +139,7 @@ Examples:
 Creates an observable of Window resize events with optional debouncing.
 
 ```typescript
-function windowResize(debounce?: number) {
+windowResize(debounce?: number) {
    return fromEvent(window, 'resize').pipe(
       ifOp(Boolean(debounce), debounceTime(debounce))
    );
@@ -176,7 +176,7 @@ and only emits distinct changes. It is the same as applying a [pluck()](https://
 followed by a [distinctUntilChanged()](https://rxjs.dev/api/operators/distinctUntilChanged).
 
 ```typescript
-function pluckDistinct<T, R>(...properties: string[]): OperatorFunction<T, R>
+pluckDistinct<T, R>(...properties: string[]): OperatorFunction<T, R>
 ```
 
 Example:
@@ -208,7 +208,7 @@ When the *status* property is:
 - `"error"` the *value* is the caught error.
 
 ```typescript
-function trackStatus<T, S>(start?: S): OperatorFunction<T, TrackStatus<T | S>>
+trackStatus<T, S>(start?: S): OperatorFunction<T, TrackStatus<T | S>>
 ```
 
 Example:
@@ -313,7 +313,7 @@ first observable that emits a value substituting `undefined` for any awaiting va
 other observables.
 
 ```typescript
-function combineEarliest<O extends Observable<any>, S, R>(observables: O[], substitute?: S): Observable<R>
+combineEarliest<O extends Observable<any>, S, R>(observables: O[], substitute?: S): Observable<R>
 ``` 
 
 [[source](https://github.com/reactgular/observables/blob/master/src/utils/combine-earliest.ts)] [[up](#utilities)]
@@ -328,7 +328,7 @@ This operator is the opposite of [combineLatest()](https://rxjs.dev/api/index/fu
 > Be aware that `combineFirst` will not emit an inital value until each observable emits a first value.
 
 ```typescript
-function combineFirst<O extends Observable<any>, R>(...observables: O[]): Observable<R>
+combineFirst<O extends Observable<any>, R>(...observables: O[]): Observable<R>
 ```
 
 Example:
