@@ -5,7 +5,7 @@ This operator is the opposite of [combineLatest()](https://rxjs.dev/api/index/fu
 > Be aware that `combineFirst` will not emit an inital value until each observable emits a first value.
 
 ```typescript
-function combineFirst<O extends Observable<any>, R>(...observables: O[]): Observable<R>
+combineFirst<O extends Observable<any>, R>(...observables: O[]): Observable<R>
 ```
 
 Example:

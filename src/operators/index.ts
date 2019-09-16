@@ -6,6 +6,7 @@ export * from './falsy';
 export * from './if-op';
 export * from './negate';
 export * from './pluck-distinct';
+export * from './track-status';
 export * from './truthy';
 export * from './with-merge-map';
 export * from './with-switch-map';

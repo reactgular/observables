@@ -48,7 +48,7 @@ Operators | Operators | Operators | Operators
 -----------|-----------|-----------|-----------
 [counter](#counter) | [disabledWhen](#disabledwhen) | [distinctStringify](#distinctstringify) | [enabledWhen](#enabledwhen)
 [falsy](#falsy) | [ifOp](#ifop) | [negate](#negate) | [pluckDistinct](#pluckdistinct)
-[truthy](#truthy) | [withMergeMap](#withmergemap) | [withSwitchMap](#withswitchmap) | [](#)
+[trackStatus](#trackstatus) | [truthy](#truthy) | [withMergeMap](#withmergemap) | [withSwitchMap](#withswitchmap)
 
 # Utilities
 
@@ -66,7 +66,7 @@ Operators | Operators | Operators | Operators
 Increments a counter for each emitted value.
 
 ```typescript
-function counter<T>(): OperatorFunction<T, [number, T]>
+counter<T>(): OperatorFunction<T, [number, T]>
 ```
 
 Example:
@@ -75,7 +75,7 @@ Example:
 of('a', 'b', 'c', 'd', 'e').pipe(
     counter(),
     toArray()
-).subscribe(v => console.log(v)); // prints  [[0, 'a'], [1, 'b'], [2, 'c'], [3, 'd'], [4, 'e']]    
+).subscribe(v => console.log(v)); // prints  [[1, 'a'], [2, 'b'], [3, 'c'], [4, 'd'], [5, 'e']]    
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/counter.ts)] [[up](#operators)]
@@ -131,7 +131,7 @@ Apply an operator based on a condition. This operator only adds another operator
 condition is *true*. When the condition is *false* the source observable is not modified.
 
 ```typescript
-function ifOp<T, R>(cond: boolean, operator: OperatorFunction<T, R>): OperatorFunction<T, T | R>
+ifOp<T, R>(cond: boolean, operator: OperatorFunction<T, R>): OperatorFunction<T, T | R>
 ```
 
 Examples:
@@ -139,7 +139,7 @@ Examples:
 Creates an observable of Window resize events with optional debouncing.
 
 ```typescript
-function windowResize(debounce?: number) {
+windowResize(debounce?: number) {
    return fromEvent(window, 'resize').pipe(
       ifOp(Boolean(debounce), debounceTime(debounce))
    );
@@ -150,9 +150,12 @@ If you are looking to apply two different operators based upon a conditional *if
 a simple `?:` condition in the `pipe()` chain.
 
 ```typescript
-example$.pipe(
-   cond ? switchMap(project) : mergeMap(project)
-);
+function switchOrMerge(cond: boolean): Observable<number> {
+    const projector = (value) => of(value).pipe(startWith(99));
+    return of(1,2,3).pipe(
+       cond ? switchMap(projector) : mergeMap(projector)
+    );
+}
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/if-op.ts)] [[up](#operators)]
@@ -176,7 +179,7 @@ and only emits distinct changes. It is the same as applying a [pluck()](https://
 followed by a [distinctUntilChanged()](https://rxjs.dev/api/operators/distinctUntilChanged).
 
 ```typescript
-function pluckDistinct<T, R>(...properties: string[]): OperatorFunction<T, R>
+pluckDistinct<T, R>(...properties: string[]): OperatorFunction<T, R>
 ```
 
 Example:
@@ -194,6 +197,71 @@ from([
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/pluck-distinct.ts)] [[up](#operators)]
+
+----
+### trackStatus
+
+Emits an Object with the properties *status* and *value*. The status property
+will contain either `"start"`, `"value"` or `"error"`.
+
+When the *status* property is:
+
+- `"start"` the *value* is the first parameter or *undefined*. This is always the *first* emitted value.
+- `"value"` the *value* property is the outer observable value.
+- `"error"` the *value* is the caught error.
+
+```typescript
+trackStatus<T, S>(start?: S): OperatorFunction<T, TrackStatus<T | S>>
+```
+
+Example:
+
+```typescript
+of("Hello World").pipe(
+    trackStatus()
+).subscribe(v => console.log(v));
+// prints 
+// {state: "start", value: undefined}
+// {state: "value", value: "Hello World"}
+```
+
+Using this operator makes it easy to create loading indicators
+for Angular components.
+
+Example:
+
+```typescript
+import {trackStatus, TrackStatus} from '@reactgular/observable/operators';
+
+@Component({
+    selector: 'example',
+    template: `
+        <ng-container *ngIf="track$ | async as track" [ngSwitch]="track.status">
+            <div *ngSwitchCase='"start"'>
+                Please wait while loading...
+            </div>
+            <div *ngSwitchCase='"value"'>
+                {{track.value}}
+            </div>
+            <div *ngSwitchCase='"error"'>
+                There was an error loading data...
+            </div>
+        </ng-container>`
+})
+export class ExampleComponent implements OnInit {
+    public track$: Observable<TrackStatus<any>>;
+   
+    public constructor(private http: HttpClient) { }
+   
+    public ngOnInit() {
+        this.data$ = this.http
+            .get('https://example.com/api')
+            .pipe(trackStatus());    
+    }
+}
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/track-status.ts)] [[up](#operators)]
 
 ----
 ### truthy
@@ -248,7 +316,7 @@ first observable that emits a value substituting `undefined` for any awaiting va
 other observables.
 
 ```typescript
-function combineEarliest<O extends Observable<any>, S, R>(observables: O[], substitute?: S): Observable<R>
+combineEarliest<O extends Observable<any>, S, R>(observables: O[], substitute?: S): Observable<R>
 ``` 
 
 [[source](https://github.com/reactgular/observables/blob/master/src/utils/combine-earliest.ts)] [[up](#utilities)]
@@ -263,7 +331,7 @@ This operator is the opposite of [combineLatest()](https://rxjs.dev/api/index/fu
 > Be aware that `combineFirst` will not emit an inital value until each observable emits a first value.
 
 ```typescript
-function combineFirst<O extends Observable<any>, R>(...observables: O[]): Observable<R>
+combineFirst<O extends Observable<any>, R>(...observables: O[]): Observable<R>
 ```
 
 Example:

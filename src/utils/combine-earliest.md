@@ -8,5 +8,5 @@ first observable that emits a value substituting `undefined` for any awaiting va
 other observables.
 
 ```typescript
-function combineEarliest<O extends Observable<any>, S, R>(observables: O[], substitute?: S): Observable<R>
+combineEarliest<O extends Observable<any>, S, R>(observables: O[], substitute?: S): Observable<R>
 ``` 

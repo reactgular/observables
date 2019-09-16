@@ -3,7 +3,7 @@ and only emits distinct changes. It is the same as applying a [pluck()](https://
 followed by a [distinctUntilChanged()](https://rxjs.dev/api/operators/distinctUntilChanged).
 
 ```typescript
-function pluckDistinct<T, R>(...properties: string[]): OperatorFunction<T, R>
+pluckDistinct<T, R>(...properties: string[]): OperatorFunction<T, R>
 ```
 
 Example:
