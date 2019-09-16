@@ -12,8 +12,8 @@ Example:
 
 ```typescript
 combineFirst([
-    of(1, 2, 3, 4),
-    of(5, 6, 7, 8),
-    of(9, 10, 11, 12)
-]).subscribe(v => console.log(v)); // prints [1, 5, 9]
+    of(1, 2).pipe(delay(1000)),
+    of(15, 16, 17),
+    of(100, 110, 120, 130)
+]).subscribe(v => console.log(v)); // prints [1, 15, 100]
 ```

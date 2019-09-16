@@ -72,10 +72,13 @@ counter<T>(): OperatorFunction<T, [number, T]>
 Example:
 
 ```typescript
-of('a', 'b', 'c', 'd', 'e').pipe(
-    counter(),
-    toArray()
-).subscribe(v => console.log(v)); // prints  [[1, 'a'], [2, 'b'], [3, 'c'], [4, 'd'], [5, 'e']]    
+of('a', 'b', 'c', 'd').pipe(
+    counter()
+).subscribe(v => console.log(v));
+// [1, 'a']
+// [2, 'b']
+// [3, 'c']
+// [4, 'd']    
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/counter.ts)] [[up](#operators)]
@@ -83,10 +86,22 @@ of('a', 'b', 'c', 'd', 'e').pipe(
 ----
 ### disabledWhen
 
-Disables emitting of values while the passed observable emits true.
+Emits values from the outer observable until the inner observable emits a *truthy* value, and
+then will start emitting values when the inner observable emits a *falsy* value.
 
 ```typescript
 disabledWhen<T>(disabled$: Observable<boolean>): MonoTypeOperatorFunction<T>
+```
+
+Example:
+
+To prevent the outer observable from emitting the first value, then use
+a `startWith()` operator of *true*.
+
+```typescript
+const never$ = of("never").pipe(
+    disableWhen(inner$.pipe(startWith(true))
+);
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/disabled-when.ts)] [[up](#operators)]
@@ -99,6 +114,20 @@ Emits all items emitted by the source Observable that are distinct by comparison
 ```typescript
 distinctStringify<T>(): MonoTypeOperatorFunction<T>
 ```
+
+Example:
+
+```typescript
+of([1,2,3], [1,2,3], {a: 1}, {a: 1}, {a: 1, b: 1}, "one", "one", "two")
+    .pipe(distinctStringify())
+    .subscribe(v => console.log(v));
+
+// [1,2,3]
+// {a: 1}
+// {a: 1, b: 1}
+// "one"
+// "two"
+``` 
 
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/distinct-stringify.ts)] [[up](#operators)]
 
@@ -120,6 +149,18 @@ Emits only *falsy* values. Performs a `filter(v => !v)` operator internally.
 
 ```typescript
 falsy<T>(): MonoTypeOperatorFunction<T>
+```
+
+Example:
+
+```typescript
+of(0, "Hello", false, [1,2], "")
+    .pipe(falsy())
+    .subscribe(v => console.log(v));
+
+// 0
+// false
+// ""
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/falsy.ts)] [[up](#operators)]
@@ -167,6 +208,16 @@ Maps *truthy* values to `false`, and *falsy* values to `true`. Performs a `map(v
 
 ```typescript
 negate<T>(): OperatorFunction<T, boolean>
+```
+
+Example:
+
+```typescript
+of(0, "Hello", false, [1,2,3], "").pipe(
+    negate(),
+    toArray()
+).subscribe(v => console.log(v));
+// prints [true, false, true, false, true]
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/negate.ts)] [[up](#operators)]
@@ -268,11 +319,21 @@ export class ExampleComponent implements OnInit {
 
 Emits only truthy values. This operator is an alias for `filter(v => Boolean(v))`, but most people write
 `filter(Boolean)` because it's shorter. The problem with using `filter(Boolean)` is that the observable
-type is changed to `Boolean`. So using `truthy()` is a shorter alias for the longer form that persists the
+type can change to `Boolean` by TypeScript. So using `truthy()` is a shorter alias for the longer form that persists the
 generic type. 
 
 ```typescript
 truthy<T>(): MonoTypeOperatorFunction<T>
+```
+
+Example:
+
+```typescript
+of(0, false, [1,2,3], "Hello", "", {}).pipe(
+    truthy(),
+    toArray()
+).subscribe(v => console.log(v));
+// prints [[1,2,3], "Hello", {}]
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/truthy.ts)] [[up](#operators)]
@@ -287,6 +348,17 @@ the value of both the outer and inner observables as `Observable<[outer, inner]>
 withMergeMap<T, R>(inner: (x: T) => Observable<R>): OperatorFunction<T, [T, R]>
 ```
 
+Example:
+
+```typescript
+of('A', 'B', 'C').pipe(
+    withMergeMap(() => of('1'))
+).subscribe(v => console.log(v));
+// ['A', '1']
+// ['B', '1']
+// ['C', '1']
+```
+
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/with-merge-map.ts)] [[up](#operators)]
 
 ----
@@ -297,6 +369,17 @@ the value of both the outer and inner observables as `Observable<[outer, inner]>
 
 ```typescript
 withSwitchMap<T, R>(inner: (x: T) => Observable<R>): OperatorFunction<T, [T, R]>
+```
+
+Example:
+
+```typescript
+of('A', 'B', 'C').pipe(
+    withSwitchMap(() => of('1'))
+).subscribe(v => console.log(v));
+// ['A', '1']
+// ['B', '1']
+// ['C', '1']
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/with-switch-map.ts)] [[up](#operators)]
@@ -317,6 +400,20 @@ other observables.
 
 ```typescript
 combineEarliest<O extends Observable<any>, S, R>(observables: O[], substitute?: S): Observable<R>
+```
+
+Example:
+
+```typescript
+combineEarliest([
+    interval(1000),
+    of('A').pipe(delay(1000)),
+    of('B').pipe(delay(2000))
+]).pipe(take(3)).subscribe(v => console.log(v));
+
+// [0, undefined, undefined]
+// [1, 'A', undefined]
+// [2, 'A', 'B']
 ``` 
 
 [[source](https://github.com/reactgular/observables/blob/master/src/utils/combine-earliest.ts)] [[up](#utilities)]
@@ -338,10 +435,10 @@ Example:
 
 ```typescript
 combineFirst([
-    of(1, 2, 3, 4),
-    of(5, 6, 7, 8),
-    of(9, 10, 11, 12)
-]).subscribe(v => console.log(v)); // prints [1, 5, 9]
+    of(1, 2).pipe(delay(1000)),
+    of(15, 16, 17),
+    of(100, 110, 120, 130)
+]).subscribe(v => console.log(v)); // prints [1, 15, 100]
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/utils/combine-first.ts)] [[up](#utilities)]
@@ -355,6 +452,17 @@ Converts the parameter to an observable, or returns the value if already an obse
 toObservable<T>(value: T | Observable<T>): Observable<T>
 ```
 
+Example:
+
+An example where an array of values is converted into an array of observables.
+
+```typescript
+const values = [100, of(200), 300];
+forkJoin(values.map(toObservable))
+    .subscribe(v => console.log(v));
+// prints [100, 200, 300]
+```
+
 [[source](https://github.com/reactgular/observables/blob/master/src/utils/to-observable.ts)] [[up](#utilities)]
 
 ----
@@ -364,6 +472,16 @@ Emits changes in the window size with optional debounce time.
 
 ```typescript
 windowResize(debounce?: number, wnd?: Window): Observable<{ innerWidth: number, innerHeight: number }>
+```
+
+Example:
+
+Creates an observable of the window aspect ratio.
+
+```typescript
+const aspect$ = windowResize(250).pipe(
+   map(({innerWidth, innerHeight}) => innerWidth / innerHeight)
+);
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/utils/window-resize.ts)] [[up](#utilities)]

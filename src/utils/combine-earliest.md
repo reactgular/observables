@@ -9,4 +9,18 @@ other observables.
 
 ```typescript
 combineEarliest<O extends Observable<any>, S, R>(observables: O[], substitute?: S): Observable<R>
+```
+
+Example:
+
+```typescript
+combineEarliest([
+    interval(1000),
+    of('A').pipe(delay(1000)),
+    of('B').pipe(delay(2000))
+]).pipe(take(3)).subscribe(v => console.log(v));
+
+// [0, undefined, undefined]
+// [1, 'A', undefined]
+// [2, 'A', 'B']
 ``` 
