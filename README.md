@@ -256,6 +256,7 @@ export class ExampleComponent implements OnInit {
             .pipe(trackStatus());    
     }
 }
+```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/track-status.ts)] [[up](#operators)]
 
