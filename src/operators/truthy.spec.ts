@@ -1,13 +1,13 @@
 import {of} from 'rxjs';
-import {finalize, toArray} from 'rxjs/operators';
+import {toArray} from 'rxjs/operators';
 import {truthy} from './truthy';
 
 describe(truthy.name, () => {
-    it('should emit only true values', done => {
-        of(1, 0, false, true, {}, '').pipe(
+    it('should emit only true values', async () => {
+        const v = await of(1, 0, false, true, {}, '').pipe(
             truthy(),
-            toArray(),
-            finalize(() => done())
-        ).subscribe(value => expect(value).toEqual([1, true, {}]));
+            toArray()
+        ).toPromise();
+        expect(v).toEqual([1, true, {}]);
     });
 });
