@@ -21,7 +21,10 @@ If you are looking to apply two different operators based upon a conditional *if
 a simple `?:` condition in the `pipe()` chain.
 
 ```typescript
-example$.pipe(
-   cond ? switchMap(project) : mergeMap(project)
-);
+function switchOrMerge(cond: boolean): Observable<number> {
+    const projector = (value) => of(value).pipe(startWith(99));
+    return of(1,2,3).pipe(
+       cond ? switchMap(projector) : mergeMap(projector)
+    );
+}
 ```

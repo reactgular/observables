@@ -66,7 +66,7 @@ Operators | Operators | Operators | Operators
 Increments a counter for each emitted value.
 
 ```typescript
-function counter<T>(): OperatorFunction<T, [number, T]>
+counter<T>(): OperatorFunction<T, [number, T]>
 ```
 
 Example:
@@ -150,9 +150,12 @@ If you are looking to apply two different operators based upon a conditional *if
 a simple `?:` condition in the `pipe()` chain.
 
 ```typescript
-example$.pipe(
-   cond ? switchMap(project) : mergeMap(project)
-);
+function switchOrMerge(cond: boolean): Observable<number> {
+    const projector = (value) => of(value).pipe(startWith(99));
+    return of(1,2,3).pipe(
+       cond ? switchMap(projector) : mergeMap(projector)
+    );
+}
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/if-op.ts)] [[up](#operators)]

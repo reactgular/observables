@@ -1,7 +1,7 @@
 Increments a counter for each emitted value.
 
 ```typescript
-function counter<T>(): OperatorFunction<T, [number, T]>
+counter<T>(): OperatorFunction<T, [number, T]>
 ```
 
 Example:
