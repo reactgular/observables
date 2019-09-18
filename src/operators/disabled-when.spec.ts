@@ -1,49 +1,46 @@
-import {BehaviorSubject, of, Subject} from 'rxjs';
-import {toArray} from 'rxjs/operators';
+import {marbles} from 'rxjs-marbles/jest';
 import {disabledWhen} from './disabled-when';
 
 describe(disabledWhen.name, () => {
-    it('should not emit when disabled', async () => {
-        const v = await of(1, 2, 3, 4, 5).pipe(
-            disabledWhen(of(true)),
-            toArray()
-        ).toPromise();
+    it('should not emit if source completes', marbles(m => {
+        const s$ = m.cold('|');
+        const o$ = m.cold('a-b-c-d-e|').pipe(disabledWhen(s$));
+        const expect = '   ---------|';
+        m.expect(o$).toBeObservable(expect);
+    }));
 
-        expect(v).toEqual([]);
-    });
+    it('should not emit if source never emits', marbles(m => {
+        const s$ = m.cold('----------');
+        const o$ = m.cold('a-b-c-d-e|').pipe(disabledWhen(s$));
+        const expect = '   ---------|';
+        m.expect(o$).toBeObservable(expect);
+    }));
 
-    it('should emit all values when not disabled', async () => {
-        const v = await of(1, 2, 3, 4, 5).pipe(
-            disabledWhen(of(false)),
-            toArray()
-        ).toPromise();
-        expect(v).toEqual([1, 2, 3, 4, 5]);
-    });
+    it('should not emit when disabled', marbles(m => {
+        const s$ = m.cold('a---|', {a: true});
+        const o$ = m.cold('a-b-c-d-e|').pipe(disabledWhen(s$));
+        const expect = '   ---------|';
+        m.expect(o$).toBeObservable(expect);
+    }));
 
-    it('should toggle disabled state', async () => {
-        const disabled$ = new BehaviorSubject(false);
-        const subject$ = new Subject<number>();
+    it('should emit all when source emits false and completes', marbles(m => {
+        const s$ = m.cold('a|', {a: false});
+        const o$ = m.cold('a-b-c-d-e|').pipe(disabledWhen(s$));
+        const expect = '   a-b-c-d-e|';
+        m.expect(o$).toBeObservable(expect);
+    }));
 
-        setTimeout(() => {
-            subject$.next(1);
-            subject$.next(2);
-            subject$.next(3);
-            disabled$.next(true);
-            subject$.next(4);
-            subject$.next(5);
-            subject$.next(6);
-            disabled$.next(false);
-            subject$.next(7);
-            subject$.next(8);
-            subject$.next(9);
-            subject$.complete();
-        });
+    it('should emit all when source emits false', marbles(m => {
+        const s$ = m.cold('a---------', {a: false});
+        const o$ = m.cold('a-b-c-d-e|').pipe(disabledWhen(s$));
+        const expect = '   a-b-c-d-e|';
+        m.expect(o$).toBeObservable(expect);
+    }));
 
-        const v = await subject$.pipe(
-            disabledWhen(disabled$),
-            toArray()
-        ).toPromise();
-
-        expect(v).toEqual([1, 2, 3, 7, 8, 9]);
-    });
+    it('should emit only when toggled to false', marbles(m => {
+        const s$ = m.cold('a---b---c|', {a: true, b: false, c: true});
+        const o$ = m.cold('a-b-c-d-e|').pipe(disabledWhen(s$));
+        const expect = '   ----c-d--|';
+        m.expect(o$).toBeObservable(expect);
+    }));
 });
