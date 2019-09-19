@@ -86,22 +86,13 @@ of('a', 'b', 'c', 'd').pipe(
 ----
 ### disabledWhen
 
-Emits values from the outer observable until the inner observable emits a *truthy* value, and
-then will start emitting values when the inner observable emits a *falsy* value.
+The inner observable can emit a *truthy* value to stop the emitting of values from the
+outer observable, and emit a *falsy* to resume emitting values.
+
+> Does not emit any values until the inner observable emits a *falsy* value.
 
 ```typescript
 disabledWhen<T>(disabled$: Observable<boolean>): MonoTypeOperatorFunction<T>
-```
-
-Example:
-
-To prevent the outer observable from emitting the first value, then use
-a `startWith()` operator of *true*.
-
-```typescript
-const never$ = of("never").pipe(
-    disableWhen(inner$.pipe(startWith(true))
-);
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/disabled-when.ts)] [[up](#operators)]
@@ -109,7 +100,9 @@ const never$ = of("never").pipe(
 ----
 ### distinctStringify
 
-Emits all items emitted by the source Observable that are distinct by comparison using `JSON.stringify()` on each value.
+Emits all items from the source Observable that are distinct by comparison using `JSON.stringify()` on each value.
+
+> Arrays with same values in different orders will be seen as different, and the same for objects with properties in different order.
 
 ```typescript
 distinctStringify<T>(): MonoTypeOperatorFunction<T>
@@ -118,13 +111,15 @@ distinctStringify<T>(): MonoTypeOperatorFunction<T>
 Example:
 
 ```typescript
-of([1,2,3], [1,2,3], {a: 1}, {a: 1}, {a: 1, b: 1}, "one", "one", "two")
+of([1,2,3], [1,2,3], [3,2,1], {a: 1}, {a: 1}, {a: 1, b: 1}, {b: 1, a: 1}, "one", "one", "two")
     .pipe(distinctStringify())
     .subscribe(v => console.log(v));
 
 // [1,2,3]
+// [3,2,1]
 // {a: 1}
 // {a: 1, b: 1}
+// {b: 1, a: 1}
 // "one"
 // "two"
 ``` 
@@ -134,7 +129,10 @@ of([1,2,3], [1,2,3], {a: 1}, {a: 1}, {a: 1, b: 1}, "one", "one", "two")
 ----
 ### enabledWhen
 
-Enables emitting of values while the passed observable emits `true`.
+The inner observable can emit a *falsy* value to stop the emitting of values from the
+outer observable, and emit a *truthy* to resume emitting values.
+
+> Does not emit any values until the inner observable emits a *truthy* value.
 
 ```typescript
 enabledWhen<T>(enabled: Observable<boolean>): MonoTypeOperatorFunction<T>
@@ -155,12 +153,8 @@ Example:
 
 ```typescript
 of(0, "Hello", false, [1,2], "")
-    .pipe(falsy())
-    .subscribe(v => console.log(v));
-
-// 0
-// false
-// ""
+    .pipe(falsy(), toArray())
+    .subscribe(v => console.log(v)); // prints [0, false, ""]
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/falsy.ts)] [[up](#operators)]
