@@ -2,7 +2,7 @@ import {of} from 'rxjs';
 import {finalize} from 'rxjs/operators';
 import {combineFirst} from './combine-first';
 
-describe(combineFirst.name, () => {
+describe('combineFirst', () => {
     it('should emit only the first values', done => {
         combineFirst([
             of(1, 2, 3, 4),

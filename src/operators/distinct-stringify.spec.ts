@@ -1,63 +1,64 @@
-import {of} from 'rxjs';
-import {toArray} from 'rxjs/operators';
+import {marbles} from 'rxjs-marbles';
 import {distinctStringify} from './distinct-stringify';
 
-describe(distinctStringify.name, () => {
-    it('should not emit duplicate numbers', async () => {
-        const v = await of(1, 2, 2, 4, 4, 5, 6, 6, 7).pipe(
-            distinctStringify(),
-            toArray()
-        ).toPromise();
-        expect(v).toEqual([1, 2, 4, 5, 6, 7]);
-    });
+describe('distinctStringify', () => {
+    it('should not emit duplicate arrays', marbles(m => {
+        const o$ = m.cold('a-b-c-d-e|', {
+            a: [1, 2, 3],
+            b: [1, 2, 3],
+            c: [3, 4, 5],
+            d: [6, 7, 8],
+            e: [6, 7, 8]
+        }).pipe(distinctStringify());
+        const expect = 'a---c-d--|';
+        m.expect(o$).toBeObservable(expect, {
+            a: [1, 2, 3],
+            c: [3, 4, 5],
+            d: [6, 7, 8]
+        });
+    }));
 
-    it('should not emit duplicate strings', async () => {
-        const v = await of('one', 'two', 'two', 'four', 'four', 'five', 'six', 'six', 'seven').pipe(
-            distinctStringify(),
-            toArray()
-        ).toPromise();
-        expect(v).toEqual(['one', 'two', 'four', 'five', 'six', 'seven']);
-    });
+    it('should not emit duplicate objects', marbles(m => {
+        const o$ = m.cold('a-b-c-d-e|', {
+            a: {x: 0},
+            b: {x: 0},
+            c: {a: 0, b: 2},
+            d: {a: 0, b: 2},
+            e: {a: 1, b: 2}
+        }).pipe(distinctStringify());
+        const expect = 'a---c---e|';
+        m.expect(o$).toBeObservable(expect, {
+            a: {x: 0},
+            c: {a: 0, b: 2},
+            e: {a: 1, b: 2}
+        });
+    }));
 
-    it('should not emit duplicate number arrays', async () => {
-        const v = await of(
-            [1, 2, 3],
-            [1, 2, 3],
-            [4, 5, 6],
-            [7, 8, 9],
-            [7, 8, 9]
-        ).pipe(
-            distinctStringify(),
-            toArray()
-        ).toPromise();
+    it('should emit objects with different property order as different', marbles(m => {
+        const o$ = m.cold('a-b-c|', {
+            a: {a: 1, b: 2, c: 2},
+            b: {c: 2, b: 2, a: 1},
+            c: {a: 1, b: 2, c: 2}
+        }).pipe(distinctStringify());
+        const expect = 'a-b-c|';
+        m.expect(o$).toBeObservable(expect, {
+            a: {a: 1, b: 2, c: 2},
+            b: {c: 2, b: 2, a: 1},
+            c: {a: 1, b: 2, c: 2}
+        });
+    }));
 
-        expect(v).toEqual([
-            [1, 2, 3],
-            [4, 5, 6],
-            [7, 8, 9]
-        ]);
-    });
-
-    it('should not emit duplicate objects', async () => {
-        const v = await of(
-            {x: 0},
-            {x: 0},
-            {x: 1},
-            {x: 1},
-            {x: 1},
-            {a: 0, b: 2},
-            {a: 0, b: 2},
-            {a: 1, b: 2}
-        ).pipe(
-            distinctStringify(),
-            toArray()
-        ).toPromise();
-
-        expect(v).toEqual([
-            {x: 0},
-            {x: 1},
-            {a: 0, b: 2},
-            {a: 1, b: 2}
-        ]);
-    });
+    it('should emit arrays with different order', marbles(m => {
+        const o$ = m.cold('a-b-c|', {
+            a: [1, 2, 3],
+            b: [3, 2, 1],
+            c: [1, 2, 3]
+        }).pipe(distinctStringify());
+        const expect = 'a-b-c|';
+        m.expect(o$).toBeObservable(expect, {
+            a: [1, 2, 3],
+            b: [3, 2, 1],
+            c: [1, 2, 3]
+        });
+    }));
 });

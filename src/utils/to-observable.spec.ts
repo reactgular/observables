@@ -2,7 +2,7 @@ import {isObservable, Observable, of} from 'rxjs';
 import {finalize, toArray} from 'rxjs/operators';
 import {toObservable} from './to-observable';
 
-describe(toObservable.name, () => {
+describe('toObservable', () => {
     it('should create observable for literal values', done => {
         const $ = toObservable('house');
         expect(isObservable($)).toBeTruthy();

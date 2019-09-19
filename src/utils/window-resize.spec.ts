@@ -1,21 +1,15 @@
-import {finalize, first, skip} from 'rxjs/operators';
+import {first, skip} from 'rxjs/operators';
 import {windowResize} from './window-resize';
 
-describe(windowResize.name, () => {
-    it('should emit an initial value', done => {
-        windowResize().pipe(
-            first(),
-            finalize(() => done())
-        ).subscribe(value => expect(value).toBeTruthy());
+describe('windowResize', () => {
+    it('should emit an initial value', async () => {
+        const value = await windowResize().pipe(first()).toPromise();
+        expect(value).toBeTruthy();
     });
 
-    it('should emit changes to the window size', done => {
-        windowResize().pipe(
-            skip(1),
-            first(),
-            finalize(() => done())
-        ).subscribe(value => expect(value).toBeTruthy());
-
-        window.dispatchEvent(new Event('resize'));
+    it('should emit changes to the window size', async () => {
+        setTimeout(() => window.dispatchEvent(new Event('resize')));
+        const value = await windowResize().pipe(skip(1), first()).toPromise();
+        expect(value).toBeTruthy();
     });
 });

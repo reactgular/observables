@@ -1,29 +1,22 @@
-import {of} from 'rxjs';
-import {toArray} from 'rxjs/operators';
+import {marbles} from 'rxjs-marbles';
 import {negate} from './negate';
 
-describe(negate.name, () => {
-    it('should invert boolean values', async () => {
-        const v = await of(true, false, false, true).pipe(
-            negate(),
-            toArray()
-        ).toPromise();
-        expect(v).toEqual([false, true, true, false]);
-    });
+describe('negate', () => {
+    it('should invert boolean values', marbles(m => {
+        const o$ = m.cold('a-b-c-d|', {a: true, b: false, c: true, d: false}).pipe(negate());
+        const expect = '   a-b-c-d|';
+        m.expect(o$).toBeObservable(expect, {a: false, b: true, c: false, d: true});
+    }));
 
-    it('should emit false for truthy values', async () => {
-        const v = await of(true, {}, 'hello', 1, []).pipe(
-            negate(),
-            toArray()
-        ).toPromise();
-        expect(v).toEqual([false, false, false, false, false]);
-    });
+    it('should emit false for truthy values', marbles(m => {
+        const o$ = m.cold('a-b-c-d-e|', {a: true, b: {}, c: 'Hello', d: 1, e: []}).pipe(negate());
+        const expect = '   a-b-c-d-e|';
+        m.expect(o$).toBeObservable(expect, {a: false, b: false, c: false, d: false, e: false});
+    }));
 
-    it('should emit true for falsy values', async () => {
-        const v = await of<any>(false, 0, '', NaN, null, undefined).pipe(
-            negate(),
-            toArray()
-        ).toPromise();
-        expect(v).toEqual([true, true, true, true, true, true]);
-    });
+    it('should emit true for falsy values', marbles(m => {
+        const o$ = m.cold('a-b-c-d-e|', {a: false, b: 0, c: '', d: NaN, e: null, f: undefined}).pipe(negate());
+        const expect = '   a-b-c-d-e|';
+        m.expect(o$).toBeObservable(expect, {a: true, b: true, c: true, d: true, e: true, f: true});
+    }));
 });

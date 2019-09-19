@@ -2,7 +2,7 @@ import {interval} from 'rxjs';
 import {finalize, take, toArray} from 'rxjs/operators';
 import {combineEarliest} from './combine-earliest';
 
-describe(combineEarliest.name, () => {
+describe('combineEarliest', () => {
     it('should emit earliest values', done => {
         combineEarliest([
             interval(100),

@@ -1,19 +1,17 @@
-import {of} from 'rxjs';
+import {marbles} from 'rxjs-marbles';
 import {mapTo} from 'rxjs/operators';
 import {ifOp} from './if-op';
 
-describe(ifOp.name, () => {
-    it('should apply the operator when true', async () => {
-        const v = await of('Hello').pipe(
-            ifOp(true, mapTo('Goodbye'))
-        ).toPromise();
-        expect(v).toEqual('Goodbye');
-    });
+describe('ifOp', () => {
+    it('should apply the operator when true', marbles(m => {
+        const o$ = m.cold('a-b-c|').pipe(ifOp(true, mapTo('Hello')));
+        const expect = '   a-b-c|';
+        m.expect(o$).toBeObservable(expect, {a: 'Hello', b: 'Hello', c: 'Hello'});
+    }));
 
-    it('should not apply the operator when false', async () => {
-        const v = await of('Hello').pipe(
-            ifOp(false, mapTo('Goodbye'))
-        ).toPromise();
-        expect(v).toEqual('Hello');
-    });
+    it('should not apply the operator when false', marbles(m => {
+        const o$ = m.cold('a-b-c|').pipe(ifOp(false, mapTo('Hello')));
+        const expect = '   a-b-c|';
+        m.expect(o$).toBeObservable(expect, {a: 'a', b: 'b', c: 'c'});
+    }));
 });
