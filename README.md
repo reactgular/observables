@@ -46,8 +46,9 @@ Here is a list of observable operators that you can use from this library.
 
 Operators | Operators | Operators | Operators
 -----------|-----------|-----------|-----------
-[counter](#counter) | [disabledWhen](#disabledwhen) | [distinctStringify](#distinctstringify) | [enabledWhen](#enabledwhen)
-[falsy](#falsy) | [ifOp](#ifop) | [negate](#negate) | [pluckDistinct](#pluckdistinct)
+[after](#after) | [before](#before) | [beforeError](#beforeerror) | [counter](#counter)
+[disabledWhen](#disabledwhen) | [distinctStringify](#distinctstringify) | [enabledWhen](#enabledwhen) | [falsy](#falsy)
+[historyBuffer](#historybuffer) | [ifOp](#ifop) | [negate](#negate) | [pluckDistinct](#pluckdistinct)
 [trackStatus](#trackstatus) | [truthy](#truthy) | [withMergeMap](#withmergemap) | [withSwitchMap](#withswitchmap)
 
 # Utilities
@@ -61,6 +62,78 @@ Operators | Operators | Operators | Operators
 
 ## Operators List
 
+### after
+
+Emits the value that came after the value that passed the provided condition.
+
+This operator has the following limitations:
+
+- This operator will never emit if the observable only emits one or fewer values.
+- This operator will never emit the first value.
+- If no values pass the provided condition, then nothing is emitted.
+
+```typescript
+after<T>(cond: (current: T, next: T) => boolean): MonoTypeOperatorFunction<T>
+```
+
+Example:
+
+```typescript
+of('starting', 'started', 'error', 'restarting').pipe(
+    after(v => v === 'error')
+).subscribe(v => console.log(v)); // prints "restarting"
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/after.ts)] [[up](#operators)]
+
+----
+### before
+
+Emits the value that came before the value that passed the provided condition.
+
+This operator has the following limitations:
+
+- This operator will never emit if the observable only emits one or fewer values.
+- This operator will never emit the last value.
+- If no values pass the provided condition, then nothing is emitted.
+
+```typescript
+before<T>(cond: (current: T, prev: T) => boolean): MonoTypeOperatorFunction<T>
+```
+
+Example:
+
+```typescript
+of('starting', 'started', 'error', 'restarting').pipe(
+    before(v => v === 'error')
+).subscribe(v => console.log(v)); // prints "started"
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/before.ts)] [[up](#operators)]
+
+----
+### beforeError
+
+Emits an array of values that came before an error. You can specify how many values to emit upon an error (the default is `1`).
+The emitted array contains the most recent value first followed by older values.
+
+> This is a good operator for debugging to see what values preceded an error. 
+
+Example:
+
+```typescript
+of('starting','started','restarting').pipe(
+    map(n => {
+        if(n === 'restarting') { throw new Error() }
+        return n;
+    }),
+    beforeError()
+}).subscribe(v => console.log(v)); // prints ["started"]
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/beforeError.ts)] [[up](#operators)]
+
+----
 ### counter
 
 Increments a counter for each emitted value.
@@ -158,6 +231,31 @@ of(0, "Hello", false, [1,2], "")
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/falsy.ts)] [[up](#operators)]
+
+----
+### historyBuffer
+
+Emits an array that starts with the current value followed by previous values. Pass a count number to limit the
+length of the array, otherwise the array will continue to grow in length until the observable completes. 
+
+```typescript
+historyBuffer<T>(count?: number): OperatorFunction<T, T[]>
+```
+
+Example:
+
+```typescript
+of(1,2,3,4,5).pipe(
+   bufferHistory(3)
+).subscribe(v => console.log(v));
+// [1]
+// [2,1]
+// [3,2,1]
+// [4,3,2]
+// [5,4,3]
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/historyBuffer.ts)] [[up](#operators)]
 
 ----
 ### ifOp

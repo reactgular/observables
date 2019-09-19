@@ -11,6 +11,11 @@ export function combineEarliest<O1, O2, O3, O4, O5, O6, S>(sources: [Observable<
 export function combineEarliest<O, S>(sources: O[]): Observable<O[]>;
 /* tslint:enable:max-line-length */
 
+/**
+ * Unlike combineLatest() which does not emit a value until all observables emits at least one value.
+ * The combineEarliest() emits immediately upon the first observable that emits a value substituting
+ * a value (defaults to undefined) for any awaiting values from the other observables.
+ */
 export function combineEarliest<O, S, R>(observables: Observable<O>[], substitute?: S): Observable<R> {
     if (observables.length === 0) {
         return of([] as any);

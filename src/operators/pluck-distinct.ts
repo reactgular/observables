@@ -11,6 +11,10 @@ export function pluckDistinct<T, K1 extends keyof T, K2 extends keyof T[K1], K3 
 export function pluckDistinct<T, R>(...properties: string[]): OperatorFunction<T, R>;
 /* tslint:disable:max-line-length */
 
+/**
+ * Maps each source value (an object) to its specified nested property, and only emits distinct changes.
+ * It is the same as applying a pluck() followed by a distinctUntilChanged().
+ */
 export function pluckDistinct<T, R>(...properties: string[]): OperatorFunction<T, R> {
     return (source: Observable<T>): Observable<R> => source.pipe(
         pluck<T, R>(...properties),
