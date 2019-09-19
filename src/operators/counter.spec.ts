@@ -1,20 +1,16 @@
-import {of} from 'rxjs';
-import {toArray} from 'rxjs/operators';
+import {marbles} from 'rxjs-marbles/jest';
 import {counter} from './counter';
 
-describe(counter.name, () => {
-    it('should increment a number for each value', async () => {
-        const v = await of('a', 'b', 'c', 'd', 'e').pipe(
-            counter(),
-            toArray()
-        ).toPromise();
-
-        expect(v).toEqual([
-            [1, 'a'],
-            [2, 'b'],
-            [3, 'c'],
-            [4, 'd'],
-            [5, 'e']
-        ]);
-    });
+describe('counter', () => {
+    it('should increment a number for each value', marbles(m => {
+        const o$ = m.cold('a-b-c-d-e|').pipe(counter());
+        const result = 'a-b-c-d-e|';
+        m.expect(o$).toBeObservable(result, {
+            a: [1, 'a'],
+            b: [2, 'b'],
+            c: [3, 'c'],
+            d: [4, 'd'],
+            e: [5, 'e']
+        });
+    }));
 });

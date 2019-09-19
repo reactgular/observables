@@ -1,37 +1,38 @@
-import {of} from 'rxjs';
-import {toArray} from 'rxjs/operators';
+import {marbles} from 'rxjs-marbles';
 import {pluckDistinct} from './pluck-distinct';
 
-describe(pluckDistinct.name, () => {
-    it('should pluck a property value', async () => {
-        const v = await of({name: 'John Smith'}).pipe(
-            pluckDistinct('name'),
-            toArray()
-        ).toPromise();
-        expect(v).toEqual(['John Smith']);
-    });
+describe('pluckDistinct', () => {
+    it('should pluck a property value', marbles(m => {
+        const o$ = m.cold('a|', {a: {name: 'John Smith'}}).pipe(pluckDistinct('name'));
+        const expect = '   a|';
+        m.expect(o$).toBeObservable(expect, {a: 'John Smith'});
+    }));
 
-    it('should pluck nested property', async () => {
-        const v = await of({person: {name: 'John Smith'}}).pipe(
-            pluckDistinct('person', 'name'),
-            toArray()
-        ).toPromise();
-        expect(v).toEqual(['John Smith']);
-    });
+    it('should pluck nested property', marbles(m => {
+        const o$ = m.cold('a|', {a: {person: {name: 'John Smith'}}}).pipe(pluckDistinct('person', 'name'));
+        const expect = '   a|';
+        m.expect(o$).toBeObservable(expect, {a: 'John Smith'});
+    }));
 
-    it('should emit unique values', async () => {
-        const v = await of(
-            {name: 'John Smith'},
-            {name: 'John Smith'},
-            {name: 'John Smith'},
-            {name: 'Jane Doe'},
-            {name: 'Jane Doe'},
-            {name: 'Mike Smith'},
-            {name: 'Jason Doe'}
-        ).pipe(
-            pluckDistinct('name'),
-            toArray()
-        ).toPromise();
-        expect(v).toEqual(['John Smith', 'Jane Doe', 'Mike Smith', 'Jason Doe']);
-    });
+    it('should emit unique values', marbles(m => {
+        const values = {
+            a: {name: 'John Smith'},
+            b: {name: 'John Smith'},
+            c: {name: 'John Smith'},
+            d: {name: 'Jane Doe'},
+            e: {name: 'Jane Doe'},
+            f: {name: 'Mike Smith'},
+            g: {name: 'John Smith'},
+            h: {name: 'Jason Doe'}
+        };
+        const o$ = m.cold('a-b-c-d-e-f-g-h|', values).pipe(pluckDistinct('name'));
+        const expect = '   a-----d---f-g-h|';
+        m.expect(o$).toBeObservable(expect, {
+            a: 'John Smith',
+            d: 'Jane Doe',
+            f: 'Mike Smith',
+            g: 'John Smith',
+            h: 'Jason Doe'
+        });
+    }));
 });

@@ -2,7 +2,7 @@ When all observables have emitted their first value, then emit an array of those
 
 This operator is the opposite of [combineLatest()](https://rxjs.dev/api/index/function/combineLatest).
 
-> Be aware that `combineFirst` will not emit an inital value until each observable emits a first value.
+> Be aware that `combineFirst` will not emit an initial value until each observable emits a first value.
 
 ```typescript
 combineFirst<O extends Observable<any>, R>(...observables: O[]): Observable<R>

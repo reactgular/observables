@@ -1,13 +1,11 @@
-import {of} from 'rxjs';
-import {toArray} from 'rxjs/operators';
+import {marbles} from 'rxjs-marbles';
 import {truthy} from './truthy';
 
-describe(truthy.name, () => {
-    it('should emit only true values', async () => {
-        const v = await of(1, 0, false, true, {}, '').pipe(
-            truthy(),
-            toArray()
-        ).toPromise();
-        expect(v).toEqual([1, true, {}]);
-    });
+describe('truthy', () => {
+    it('should emit only truthy values', marbles(m => {
+        const values = {a: 1, b: 0, c: false, d: true, e: {}, f: NaN, g: ''};
+        const e1 = m.cold('a-b-c-d-e-f-g', values).pipe(truthy());
+        const expect = '   a-----d-e----';
+        m.expect(e1).toBeObservable(expect, {a: 1, d: true, e: {}});
+    }));
 });
