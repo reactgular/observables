@@ -46,9 +46,10 @@ Here is a list of observable operators that you can use from this library.
 
 Operators | Operators | Operators | Operators
 -----------|-----------|-----------|-----------
-[counter](#counter) | [disabledWhen](#disabledwhen) | [distinctStringify](#distinctstringify) | [enabledWhen](#enabledwhen)
-[falsy](#falsy) | [ifOp](#ifop) | [negate](#negate) | [pluckDistinct](#pluckdistinct)
-[trackStatus](#trackstatus) | [truthy](#truthy) | [withMergeMap](#withmergemap) | [withSwitchMap](#withswitchmap)
+[after](#after) | [before](#before) | [counter](#counter) | [disabledWhen](#disabledwhen)
+[distinctStringify](#distinctstringify) | [enabledWhen](#enabledwhen) | [falsy](#falsy) | [ifOp](#ifop)
+[negate](#negate) | [pluckDistinct](#pluckdistinct) | [trackStatus](#trackstatus) | [truthy](#truthy)
+[withMergeMap](#withmergemap) | [withSwitchMap](#withswitchmap) | [](#) | [](#)
 
 # Utilities
 
@@ -61,6 +62,56 @@ Operators | Operators | Operators | Operators
 
 ## Operators List
 
+### after
+
+Emits the value that came after the value that passed the provided condition.
+
+This operator has the following limitations:
+
+- This operator will never emit if the observable only emits one or fewer values.
+- This operator will never emit the first value.
+- If no values pass the provided condition, then nothing is emitted.
+
+```typescript
+after<T>(cond: (current: T, next: T) => boolean): MonoTypeOperatorFunction<T>
+```
+
+Example:
+
+```typescript
+of('starting', 'started', 'error', 'restarting').pipe(
+    after(v => v === 'error')
+).subscribe(v => console.log(v)); // prints "restarting"
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/after.ts)] [[up](#operators)]
+
+----
+### before
+
+Emits the value that came before the value that passed the provided condition.
+
+This operator has the following limitations:
+
+- This operator will never emit if the observable only emits one or fewer values.
+- This operator will never emit the last value.
+- If no values pass the provided condition, then nothing is emitted.
+
+```typescript
+before<T>(cond: (current: T, prev: T) => boolean): MonoTypeOperatorFunction<T>
+```
+
+Example:
+
+```typescript
+of('starting', 'started', 'error', 'restarting').pipe(
+    before(v => v === 'error')
+).subscribe(v => console.log(v)); // prints "started"
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/before.ts)] [[up](#operators)]
+
+----
 ### counter
 
 Increments a counter for each emitted value.

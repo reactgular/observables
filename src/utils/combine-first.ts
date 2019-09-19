@@ -11,6 +11,10 @@ export function combineFirst<O1, O2, O3, O4, O5, O6>(sources: [Observable<O1>, O
 export function combineFirst<O>(sources: O[]): Observable<O[]>;
 /* tslint:enable:max-line-length */
 
+/**
+ * When all observables have emitted their first value, then emit an array of those values.
+ * This operator is the opposite of combineLatest().
+ */
 export function combineFirst<O extends Observable<any>, R>(observables: O[]): Observable<R> {
     if (observables.length === 0) {
         return of([] as any);
