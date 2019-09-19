@@ -8,6 +8,7 @@ export * from './enabled-when';
 export * from './falsy';
 export * from './historyBuffer';
 export * from './if-op';
+export * from './map-first';
 export * from './negate';
 export * from './pluck-distinct';
 export * from './track-status';
