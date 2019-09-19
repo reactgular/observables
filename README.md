@@ -219,7 +219,7 @@ of(0, "Hello", false, [1,2,3], "").pipe(
 ----
 ### pluckDistinct
 
-Maps each source value (an object) to its specified nest property,
+Maps each source value (an object) to its specified nested property,
 and only emits distinct changes. It is the same as applying a [pluck()](https://rxjs.dev/api/operators/pluck)
 followed by a [distinctUntilChanged()](https://rxjs.dev/api/operators/distinctUntilChanged).
 
@@ -383,13 +383,9 @@ of('A', 'B', 'C').pipe(
 
 ### combineEarliest
 
-Whenever any input observable emits a value, it computes a formula using the latest
-values from all the inputs, if any input has not yet emitted a value then `undefined`
-is used instead, and the observable emits an array of all those values.
-
 Unlike [combineLatest()](https://rxjs.dev/api/index/function/combineLatest) which does not emit a value until
 all observables emits at least one value. The `combineEarliest()` emits immediately upon the
-first observable that emits a value substituting `undefined` for any awaiting values from the
+first observable that emits a value substituting a value (defaults to `undefined`) for any awaiting values from the
 other observables.
 
 ```typescript
@@ -419,7 +415,7 @@ When all observables have emitted their first value, then emit an array of those
 
 This operator is the opposite of [combineLatest()](https://rxjs.dev/api/index/function/combineLatest).
 
-> Be aware that `combineFirst` will not emit an inital value until each observable emits a first value.
+> Be aware that `combineFirst` will not emit an initial value until each observable emits a first value.
 
 ```typescript
 combineFirst<O extends Observable<any>, R>(...observables: O[]): Observable<R>
