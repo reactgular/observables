@@ -48,8 +48,9 @@ Operators | Operators | Operators | Operators
 -----------|-----------|-----------|-----------
 [after](#after) | [before](#before) | [beforeError](#beforeerror) | [counter](#counter)
 [disabledWhen](#disabledwhen) | [distinctStringify](#distinctstringify) | [enabledWhen](#enabledwhen) | [falsy](#falsy)
-[historyBuffer](#historybuffer) | [ifOp](#ifop) | [negate](#negate) | [pluckDistinct](#pluckdistinct)
-[trackStatus](#trackstatus) | [truthy](#truthy) | [withMergeMap](#withmergemap) | [withSwitchMap](#withswitchmap)
+[historyBuffer](#historybuffer) | [ifOp](#ifop) | [mapFirst](#mapfirst) | [mapLast](#maplast)
+[negate](#negate) | [pluckDistinct](#pluckdistinct) | [trackStatus](#trackstatus) | [truthy](#truthy)
+[withMergeMap](#withmergemap) | [withSwitchMap](#withswitchmap) | [](#) | [](#)
 
 # Utilities
 
@@ -292,6 +293,57 @@ function switchOrMerge(cond: boolean): Observable<number> {
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/if-op.ts)] [[up](#operators)]
+
+----
+### mapFirst
+
+Applies a given `project` function to the first value emitted by the source Observables, and emits the resulting value. Only the first
+value is projected and subsequent values are emitted without projection.
+
+> This operator is an alias for doing `map((value, indx) => indx === 0 ? project(value) : value)` 
+
+Example:
+
+```typescript
+of(1,2,3,4).pipe(
+    mapFirst(v => v * 100)
+).subscribe(v => console.log(v)); 
+// 100
+// 2
+// 3
+// 4
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/map-first.ts)] [[up](#operators)]
+
+----
+### mapLast
+
+Applies a given `project` function to the last value emitted by the source Observables, and emits the resulting value. Only the last
+value is projected and previous values are emitted without projection. This operator uses [pairwise()](https://rxjs.dev/api/operators/pairwise) 
+internally and emits each value only when a next value is emitted or the source observable completes.
+
+This operator has the following limitations:
+
+- Each emitted value is the previous value from the source observable, and the last value is flushed out when the source completes.
+- If the source emits only one value and does not complete, then no values are emitted.
+
+```typescript
+mapLast<T, R>(project: (value: T) => R): OperatorFunction<T, T | R>
+```
+
+Example:
+
+```typescript
+of(1,2,3).pipe(
+    mapLast(v => v + 1000)
+).subscribe(v => console.log(v));
+// 1
+// 2
+// 1003
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/map-last.ts)] [[up](#operators)]
 
 ----
 ### negate
