@@ -12,7 +12,7 @@ describe('mapLast', () => {
             d: '!d!'
         });
     }));
-    
+
     it('should not emit any values if observable emits only one and never completes', marbles(m => {
         const source = m.cold('a').pipe(mapLast(v => `!${v}!`));
         m.expect(source).toBeObservable('');
