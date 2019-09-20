@@ -22,16 +22,16 @@ function equal(a: any, b: any): boolean {
         return true;
     }
 
-    if (a && b && typeof a == 'object' && typeof b == 'object') {
+    if (a && b && typeof a === 'object' && typeof b === 'object') {
         const isArrayA = Array.isArray(a);
         const isArrayB = Array.isArray(b);
 
         if (isArrayA && isArrayB) {
-            const length = a.length;
-            if (length !== b.length) {
+            const lengthA = a.length;
+            if (lengthA !== b.length) {
                 return false;
             }
-            for (let i = length; i-- !== 0;) {
+            for (let i = lengthA; i-- !== 0;) {
                 if (!equal(a[i], b[i])) {
                     return false;
                 }
@@ -49,7 +49,7 @@ function equal(a: any, b: any): boolean {
             return false;
         }
         if (isDateA && isDateB) {
-            return a.getTime() == b.getTime();
+            return a.getTime() === b.getTime();
         }
 
         const isRegexpA: boolean = a instanceof RegExp;
@@ -58,7 +58,7 @@ function equal(a: any, b: any): boolean {
             return false;
         }
         if (isRegexpA && isRegexpB) {
-            return a.toString() == b.toString();
+            return a.toString() === b.toString();
         }
 
         const keys = Object.keys(a);
