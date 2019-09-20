@@ -12,7 +12,8 @@ export default [
       format: 'umd',
       globals: {
         'rxjs': 'rxjs',
-        'rxjs/operators': 'rxjs.operators'
+        'rxjs/operators': 'rxjs.operators',
+        'tslib': 'tslib'
       }
     },
     external: name => {
