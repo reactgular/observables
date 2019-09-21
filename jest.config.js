@@ -2,7 +2,9 @@ module.exports = {
   verbose: true,
   bail: true,
   collectCoverageFrom: [
-    './src/**/*.ts'
+    './src/**/*.ts',
+    '!./**/index.ts',
+    '!./src/umd.ts'
   ],
   roots: [
     './src'
