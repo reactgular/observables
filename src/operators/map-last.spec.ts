@@ -23,4 +23,10 @@ describe('mapLast', () => {
         const expect = '       --a-b-c)';
         m.expect(source).toBeObservable(expect);
     }));
+
+    it('should emit last value for single value and completes', marbles(m => {
+        const source = m.cold('a|').pipe(mapLast(v => `!${v}!`));
+        const expect = '-(a|)';
+        m.expect(source).toBeObservable(expect, {a: '!a!'});
+    }));
 });
