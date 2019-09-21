@@ -14,7 +14,7 @@ export function scanLatestFrom<T, R>(accumulator: (acc: R, value: T, index: numb
             scan((acc: [R, number, R], next: [T, number, R], index: number): [R, number, R] => {
                 const [accValue, accCount] = acc;
                 const [nextValue, nextCount, nextLatest] = next;
-                let result = accCount !== nextCount
+                const result = accCount !== nextCount
                     ? accumulator(nextLatest, nextValue, index, true)
                     : accumulator(accValue, nextValue, index, false);
                 return [result, nextCount, nextLatest];
