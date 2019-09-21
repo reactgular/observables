@@ -8,7 +8,7 @@ import {distinctUntilChanged} from 'rxjs/operators';
 export function distinctDeepEqual<T>(): MonoTypeOperatorFunction<T> {
     return (source: Observable<T>): Observable<T> => {
         return source.pipe(
-            distinctUntilChanged((x, y) => equal(x, y))
+            distinctUntilChanged((x, y) => deepEqual(x, y))
         );
     };
 }
@@ -17,7 +17,7 @@ export function distinctDeepEqual<T>(): MonoTypeOperatorFunction<T> {
  * A deep comparison function copied from fast-deep-equal.
  * @see https://github.com/epoberezkin/fast-deep-equal
  */
-function equal(a: any, b: any): boolean {
+export function deepEqual(a: any, b: any): boolean {
     if (a === b) {
         return true;
     }
@@ -32,7 +32,7 @@ function equal(a: any, b: any): boolean {
                 return false;
             }
             for (let i = lengthA; i-- !== 0;) {
-                if (!equal(a[i], b[i])) {
+                if (!deepEqual(a[i], b[i])) {
                     return false;
                 }
             }
@@ -76,7 +76,7 @@ function equal(a: any, b: any): boolean {
 
         for (let i = length; i-- !== 0;) {
             const key = keys[i];
-            if (!equal(a[key], b[key])) {
+            if (!deepEqual(a[key], b[key])) {
                 return false;
             }
         }
@@ -84,5 +84,6 @@ function equal(a: any, b: any): boolean {
         return true;
     }
 
+    // true if both NaN, false otherwise
     return a !== a && b !== b;
 }
