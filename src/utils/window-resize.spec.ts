@@ -7,6 +7,11 @@ describe('windowResize', () => {
         expect(value).toBeTruthy();
     });
 
+    it('should emit an initial value with debounce', async () => {
+        const value = await windowResize(250).pipe(first()).toPromise();
+        expect(value).toBeTruthy();
+    });
+
     it('should emit changes to the window size', async () => {
         setTimeout(() => window.dispatchEvent(new Event('resize')));
         const value = await windowResize().pipe(skip(1), first()).toPromise();
