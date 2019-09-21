@@ -49,8 +49,8 @@ Operators | Operators | Operators | Operators
 [after](#after) | [before](#before) | [beforeError](#beforeerror) | [counter](#counter)
 [disabledWhen](#disabledwhen) | [distinctArray](#distinctarray) | [distinctDeepEqual](#distinctdeepequal) | [distinctStringify](#distinctstringify)
 [enabledWhen](#enabledwhen) | [falsy](#falsy) | [historyBuffer](#historybuffer) | [ifOp](#ifop)
-[mapFirst](#mapfirst) | [mapLast](#maplast) | [negate](#negate) | [pluckDistinct](#pluckdistinct)
-[trackStatus](#trackstatus) | [truthy](#truthy) | [withMergeMap](#withmergemap) | [withSwitchMap](#withswitchmap)
+[loadFirst](#loadfirst) | [mapFirst](#mapfirst) | [mapLast](#maplast) | [negate](#negate)
+[pluckDistinct](#pluckdistinct) | [truthy](#truthy) | [withMergeMap](#withmergemap) | [withSwitchMap](#withswitchmap)
 
 # Utilities
 
@@ -203,8 +203,6 @@ of([1,2,3], [3,2,1], [1, 3, 2], [4, 5, 6], [1, 2, 3]).pipe(
 Only emits when the current value is deeply different than the last. Two values that have different references, but contain the
 same properties will be compared to be the same. This is the same for arrays, nested objects, dates and regular expressions.
  
-> distinctDeepEqual() uses [fastDeepEqual](https://github.com/epoberezkin/fast-deep-equal) comparison to see if two values have changed.
-
 ```typescript
 distinctDeepEqual<T>(): MonoTypeOperatorFunction<T>
 ```
@@ -346,6 +344,75 @@ function switchOrMerge(cond: boolean): Observable<number> {
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/if-op.ts)] [[up](#operators)]
 
 ----
+### loadFirst
+
+Emits objects that describe the loading of data from a remote resource (like making a HTTP request). The objects
+contain the *status* property which can be either `"start"`, `"value"` or `"error"`, and a *value* property which
+holds the first data emitted by the outer observable.
+ 
+> This operator only reads the *first* value from the outer observable, and then completes.
+
+There is always a *start* object emitted first followed by either a *value* or *error* object. The *error* object
+can be a thrown error or the result of the outer observable *completing* without any results.
+
+```typescript
+export interface LoadFirst<T> {
+    status: string;
+    value: T | undefined;
+}
+
+loadFirst<T, S, E>(start?: S, empty?: E): OperatorFunction<T, LoadFirst<T | S | E>>
+```
+
+Example:
+
+```typescript
+of("Hello World").pipe(
+    loadFirst()
+).subscribe(v => console.log(v));
+// prints 
+// {state: "start", value: undefined}
+// {state: "value", value: "Hello World"}
+```
+
+You can use this operator to make loading indicators for Angular components.
+
+Example:
+
+```typescript
+import {loadFirst, LoadFirst} from '@reactgular/observable/operators';
+
+@Component({
+    selector: 'example',
+    template: `
+        <ng-container *ngIf="load$ | async as load" [ngSwitch]="load.status">
+            <div *ngSwitchCase='"start"'>
+                Please wait while loading...
+            </div>
+            <div *ngSwitchCase='"value"'>
+                {{load.value}}
+            </div>
+            <div *ngSwitchCase='"error"'>
+                There was an error loading data...
+            </div>
+        </ng-container>`
+})
+export class ExampleComponent implements OnInit {
+    public load$: Observable<LoadFirst<any>>;
+   
+    public constructor(private http: HttpClient) { }
+   
+    public ngOnInit() {
+        this.data$ = this.http
+            .get('https://example.com/api')
+            .pipe(loadFirst());    
+    }
+}
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/load-first.ts)] [[up](#operators)]
+
+----
 ### mapFirst
 
 Applies a given `project` function to the first value emitted by the source Observables, and emits the resulting value. Only the first
@@ -443,71 +510,6 @@ from([
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/pluck-distinct.ts)] [[up](#operators)]
-
-----
-### trackStatus
-
-Emits an Object with the properties *status* and *value*. The status property
-will contain either `"start"`, `"value"` or `"error"`.
-
-When the *status* property is:
-
-- `"start"` the *value* is the first parameter or *undefined*. This is always the *first* emitted value.
-- `"value"` the *value* property is the outer observable value.
-- `"error"` the *value* is the caught error.
-
-```typescript
-trackStatus<T, S>(start?: S): OperatorFunction<T, TrackStatus<T | S>>
-```
-
-Example:
-
-```typescript
-of("Hello World").pipe(
-    trackStatus()
-).subscribe(v => console.log(v));
-// prints 
-// {state: "start", value: undefined}
-// {state: "value", value: "Hello World"}
-```
-
-Using this operator makes it easy to create loading indicators
-for Angular components.
-
-Example:
-
-```typescript
-import {trackStatus, TrackStatus} from '@reactgular/observable/operators';
-
-@Component({
-    selector: 'example',
-    template: `
-        <ng-container *ngIf="track$ | async as track" [ngSwitch]="track.status">
-            <div *ngSwitchCase='"start"'>
-                Please wait while loading...
-            </div>
-            <div *ngSwitchCase='"value"'>
-                {{track.value}}
-            </div>
-            <div *ngSwitchCase='"error"'>
-                There was an error loading data...
-            </div>
-        </ng-container>`
-})
-export class ExampleComponent implements OnInit {
-    public track$: Observable<TrackStatus<any>>;
-   
-    public constructor(private http: HttpClient) { }
-   
-    public ngOnInit() {
-        this.data$ = this.http
-            .get('https://example.com/api')
-            .pipe(trackStatus());    
-    }
-}
-```
-
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/track-status.ts)] [[up](#operators)]
 
 ----
 ### truthy
