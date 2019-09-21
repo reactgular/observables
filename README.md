@@ -614,11 +614,12 @@ combineEarliest([
 ----
 ### combineFirst
 
-When all observables have emitted their first value, then emit an array of those values.
+When all observables have emitted their first value, then emit an array of those values and complete.
 
-This operator is the opposite of [combineLatest()](https://rxjs.dev/api/index/function/combineLatest).
+This operator uses [combineLatest()](https://rxjs.dev/api/index/function/combineLatest) internally, but only 
+firsts the first value from each observable.
 
-> Be aware that `combineFirst` will not emit an initial value until each observable emits a first value.
+> Be aware that `combineFirst` will not emit a initial value until each observable emits a first value.
 
 ```typescript
 combineFirst<O extends Observable<any>, R>(...observables: O[]): Observable<R>
