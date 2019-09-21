@@ -2,18 +2,6 @@ import {MonoTypeOperatorFunction, Observable} from 'rxjs';
 import {distinctUntilChanged} from 'rxjs/operators';
 
 /**
- * Only emits when the current value is deeply different than the last. Two values that have different references, but contain the
- * same properties will be compared to be the same. This is the same for arrays, nested objects, dates and regular expressions.
- */
-export function distinctDeepEqual<T>(): MonoTypeOperatorFunction<T> {
-    return (source: Observable<T>): Observable<T> => {
-        return source.pipe(
-            distinctUntilChanged((x, y) => deepEqual(x, y))
-        );
-    };
-}
-
-/**
  * A deep comparison function copied from fast-deep-equal.
  * @see https://github.com/epoberezkin/fast-deep-equal
  */
@@ -86,4 +74,16 @@ export function deepEqual(a: any, b: any): boolean {
 
     // true if both NaN, false otherwise
     return a !== a && b !== b;
+}
+
+/**
+ * Only emits when the current value is deeply different than the last. Two values that have different references, but contain the
+ * same properties will be compared to be the same. This is the same for arrays, nested objects, dates and regular expressions.
+ */
+export function distinctDeepEqual<T>(): MonoTypeOperatorFunction<T> {
+    return (source: Observable<T>): Observable<T> => {
+        return source.pipe(
+            distinctUntilChanged((x, y) => deepEqual(x, y))
+        );
+    };
 }

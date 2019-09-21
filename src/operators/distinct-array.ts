@@ -2,19 +2,6 @@ import {MonoTypeOperatorFunction, Observable} from 'rxjs';
 import {distinctUntilChanged, map} from 'rxjs/operators';
 
 /**
- * Only emits when an array contains different values than the last and ignores the order of those values.
- */
-export function distinctArray<T>(): MonoTypeOperatorFunction<T> {
-    return (source: Observable<T>): Observable<T> => {
-        return source.pipe(
-            map(mapToSorted),
-            distinctUntilChanged((prev, next) => sortedEqual(prev, next)),
-            map(unmapSorted)
-        );
-    };
-}
-
-/**
  * Maps an array to a tuple of the original and sorted.
  */
 export const mapToSorted = <T>(arr: T): [T, T] => [arr, Array.isArray(arr) ? [...arr].sort() as any as T : undefined];
@@ -50,4 +37,17 @@ export function sortedEqual<T>(a: [T, T], b: [T, T]): boolean {
     }
 
     return true;
+}
+
+/**
+ * Only emits when an array contains different values than the last and ignores the order of those values.
+ */
+export function distinctArray<T>(): MonoTypeOperatorFunction<T> {
+    return (source: Observable<T>): Observable<T> => {
+        return source.pipe(
+            map(mapToSorted),
+            distinctUntilChanged((prev, next) => sortedEqual(prev, next)),
+            map(unmapSorted)
+        );
+    };
 }
