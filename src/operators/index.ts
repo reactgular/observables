@@ -14,6 +14,7 @@ export {mapFirst} from './map-first';
 export {mapLast} from './map-last';
 export {negate} from './negate';
 export {pluckDistinct} from './pluck-distinct';
+export {scanLatestFrom} from './scan-latest-from';
 export {loadFirst, LoadFirst} from './load-first';
 export {truthy} from './truthy';
 export {withMergeMap} from './with-merge-map';
