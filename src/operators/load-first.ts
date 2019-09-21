@@ -1,10 +1,10 @@
 import {Observable, of, OperatorFunction} from 'rxjs';
-import {catchError, map, startWith} from 'rxjs/operators';
+import {catchError, defaultIfEmpty, map, startWith, take} from 'rxjs/operators';
 
 /**
  * A tracking object that describes the state of the observable and the emitted values.
  */
-export interface TrackStatus<T> {
+export interface LoadFirst<T> {
     /**
      * Holds either "start", "value" or "error"
      */
@@ -21,10 +21,12 @@ export interface TrackStatus<T> {
  * Emits an Object with the properties status and value.
  * The status property will contain either "start", "value" or "error".
  */
-export function trackStatus<T, S>(start?: S): OperatorFunction<T, TrackStatus<T | S>> {
-    const toStatus = (status: string, value: T | S) => ({status, value});
-    return (source: Observable<T>): Observable<TrackStatus<T | S>> => source.pipe(
+export function loadFirst<T, S, E>(start?: S, empty?: E): OperatorFunction<T, LoadFirst<T | S | E>> {
+    const toStatus = (status: string, value: T | S | E) => ({status, value});
+    return (source: Observable<T>): Observable<LoadFirst<T | S | E>> => source.pipe(
+        take(1),
         map(value => toStatus('value', value)),
+        defaultIfEmpty(toStatus('error', empty)),
         startWith(toStatus('start', start)),
         catchError(err => of(toStatus('error', err)))
     );
