@@ -59,7 +59,7 @@ Here is a list of utility functions that you can use from this library.
 
 Operators | Operators | Operators | Operators
 -----------|-----------|-----------|-----------
-[combineEarliest](#combineearliest) | [toObservable](#toobservable) | [windowResize](#windowresize) | [](#)
+[combineEarliest](#combineearliest) | [mergeTrim](#mergetrim) | [toObservable](#toobservable) | [windowResize](#windowresize)
 
 
 ## Operators List
@@ -635,6 +635,18 @@ combineEarliest([
 ``` 
 
 [[source](https://github.com/reactgular/observables/blob/master/src/utils/combine-earliest.ts)] [[up](#utilities)]
+
+----
+### mergeTrim
+
+Creates an output observable which concurrently emits all values from every 
+given input observable until any observable completes.
+
+```typescript
+mergeTrim<T>(...observables: Observable<T>[]): Observable<T>
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/utils/merge-trim.ts)] [[up](#utilities)]
 
 ----
 ### toObservable
