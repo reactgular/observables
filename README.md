@@ -59,8 +59,8 @@ Here is a list of utility functions that you can use from this library.
 
 Operators | Operators | Operators | Operators
 -----------|-----------|-----------|-----------
-[combineEarliest](#combineearliest) | [mergeDelayError](#mergedelayerror) | [mergeTrim](#mergetrim) | [toObservable](#toobservable)
-[windowResize](#windowresize) | [](#) | [](#) | [](#)
+[combineEarliest](#combineearliest) | [mergeDelayError](#mergedelayerror) | [mergeTrim](#mergetrim) | [roundRobin](#roundrobin)
+[toObservable](#toobservable) | [windowResize](#windowresize) | [](#) | [](#)
 
 
 ## Operators List
@@ -680,6 +680,18 @@ mergeTrim<T>(...observables: Observable<T>[]): Observable<T>
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/utils/merge-trim.ts)] [[up](#utilities)]
+
+----
+### roundRobin
+
+Creates an output observable which emits values from each observable in a round robin sequence. Where the first observable must emit
+a value, before the next observable emits a value and starts over after all observables have emitted a value.
+
+```typescript
+function roundRobin<T>(...observables: Observable<T>[]): Observable<T>
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/utils/round-robin.ts)] [[up](#utilities)]
 
 ----
 ### toObservable
