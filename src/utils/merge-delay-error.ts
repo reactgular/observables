@@ -15,10 +15,10 @@ export function mergeDelayError<T>(...observables: Observable<T>[]): Observable<
     const EMPTY_ERROR = Object.freeze({});
 
     return of(observables).pipe(
-        map(observables => {
+        map(obs => {
             const replayError$ = new BehaviorSubject(EMPTY_ERROR);
 
-            const mergeDelayError$ = observables.map(o => o.pipe(
+            const mergeDelayError$ = obs.map(o => o.pipe(
                 catchError((err) => {
                     if (replayError$.getValue() === EMPTY_ERROR) {
                         replayError$.next(err);

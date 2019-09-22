@@ -14,14 +14,14 @@ export function roundRobin<T>(...observables: Observable<T>[]): Observable<T>;
 
 export function roundRobin<T>(...observables: Observable<T>[]): Observable<T> {
     const SKIP_VALUE: T = Object.freeze({}) as any as T;
-    const scanFunc = <T>(acc: [number, T], next: [number, T]): [number, T] => {
+    const scanFunc = (acc: [number, T], next: [number, T]): [number, T] => {
         const [accIndex] = acc;
         const [nextIndex, nextValue] = next;
         if (accIndex === nextIndex) {
-            const next = nextIndex === observables.length - 1 ? 0 : nextIndex + 1;
-            return [next, nextValue as any as T];
+            const index = nextIndex === observables.length - 1 ? 0 : nextIndex + 1;
+            return [index, nextValue];
         }
-        return [accIndex, SKIP_VALUE as any as T];
+        return [accIndex, SKIP_VALUE];
     };
     const ignoredValues = ([, value]: [number, T]) => value !== SKIP_VALUE;
     const unwrapValue = ([, value]: [number, T]) => value;
