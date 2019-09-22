@@ -5,7 +5,7 @@ const cache = {};
 
 export default [
   {
-    input: 'dist/out-tsc/es5/umd.js',
+    input: 'dist/out-tsc/es5/index.js',
     output: {
       name: 'observables',
       file: 'dist/bundles/observables.umd.js',

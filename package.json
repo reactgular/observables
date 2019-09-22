@@ -1,6 +1,6 @@
 {
   "name": "@reactgular/observables",
-  "version": "2.0.0-beta1",
+  "version": "2.0.0-beta2",
   "description": "Angular library that contains handy rxjs operators.",
   "author": "reactgular.com",
   "homepage": "https://github.com/reactgular/observables",
@@ -55,5 +55,7 @@
     "tslint": "^5.19.0",
     "typescript": "^3.6.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "tslib": "^1.10.0"
+  }
 }
