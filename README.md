@@ -59,7 +59,8 @@ Here is a list of utility functions that you can use from this library.
 
 Operators | Operators | Operators | Operators
 -----------|-----------|-----------|-----------
-[combineEarliest](#combineearliest) | [mergeTrim](#mergetrim) | [toObservable](#toobservable) | [windowResize](#windowresize)
+[combineEarliest](#combineearliest) | [mergeDelayError](#mergedelayerror) | [mergeTrim](#mergetrim) | [toObservable](#toobservable)
+[windowResize](#windowresize) | [](#) | [](#) | [](#)
 
 
 ## Operators List
@@ -635,6 +636,38 @@ combineEarliest([
 ``` 
 
 [[source](https://github.com/reactgular/observables/blob/master/src/utils/combine-earliest.ts)] [[up](#utilities)]
+
+----
+### mergeDelayError
+
+Creates an output observable which concurrently emits all values from every
+given input observable, but delays any thrown errors until all observables have 
+completed, and throws the first error.
+
+> All observables must complete before any awaiting error are thrown.
+
+```typescript
+mergeDelayError<T>(...observables: Observable<T>[]): Observable<T>
+```
+
+Example:
+
+```typescript
+mergeDelayError(
+    of(1,2,3),
+    throwError('ERROR')
+).subscribe(
+    v => console.log(v),
+    err => console.error(err)
+);
+// prints
+// 1
+// 2
+// 3
+// ERROR
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/utils/merge-delay-error.ts)] [[up](#utilities)]
 
 ----
 ### mergeTrim
