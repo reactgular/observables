@@ -6,9 +6,9 @@ describe('combineEarliest', () => {
         const o1 = m.cold('a----|');
         const o2 = m.cold('1----|');
         const o3 = m.cold('w----|');
-        const expected = ' (abc)|';
+        const result = '   (abc)|';
         const source = combineEarliest([o1, o2, o3]);
-        m.expect(source).toBeObservable(expected, {
+        m.expect(source).toBeObservable(result, {
             a: ['a', undefined, undefined],
             b: ['a', '1', undefined],
             c: ['a', '1', 'w']
@@ -19,9 +19,9 @@ describe('combineEarliest', () => {
         const o1 = m.cold('a-----b-----c----|');
         const o2 = m.cold('--1-----2-----3--|');
         const o3 = m.cold('----w-----x-----y|');
-        const expected = ' a-b-c-d-e-f-g-h-i|';
+        const result = '   a-b-c-d-e-f-g-h-i|';
         const source = combineEarliest([o1, o2, o3]);
-        m.expect(source).toBeObservable(expected, {
+        m.expect(source).toBeObservable(result, {
             a: ['a', undefined, undefined],
             b: ['a', '1', undefined],
             c: ['a', '1', 'w'],

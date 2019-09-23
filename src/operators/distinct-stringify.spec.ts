@@ -10,8 +10,8 @@ describe('distinctStringify', () => {
             d: [6, 7, 8],
             e: [6, 7, 8]
         }).pipe(distinctStringify());
-        const expect = 'a---c-d--|';
-        m.expect(o$).toBeObservable(expect, {
+        const result = 'a---c-d--|';
+        m.expect(o$).toBeObservable(result, {
             a: [1, 2, 3],
             c: [3, 4, 5],
             d: [6, 7, 8]
@@ -26,8 +26,8 @@ describe('distinctStringify', () => {
             d: {a: 0, b: 2},
             e: {a: 1, b: 2}
         }).pipe(distinctStringify());
-        const expect = 'a---c---e|';
-        m.expect(o$).toBeObservable(expect, {
+        const result = 'a---c---e|';
+        m.expect(o$).toBeObservable(result, {
             a: {x: 0},
             c: {a: 0, b: 2},
             e: {a: 1, b: 2}
@@ -40,8 +40,8 @@ describe('distinctStringify', () => {
             b: {c: 2, b: 2, a: 1},
             c: {a: 1, b: 2, c: 2}
         }).pipe(distinctStringify());
-        const expect = 'a-b-c|';
-        m.expect(o$).toBeObservable(expect, {
+        const result = 'a-b-c|';
+        m.expect(o$).toBeObservable(result, {
             a: {a: 1, b: 2, c: 2},
             b: {c: 2, b: 2, a: 1},
             c: {a: 1, b: 2, c: 2}
@@ -54,8 +54,8 @@ describe('distinctStringify', () => {
             b: [3, 2, 1],
             c: [1, 2, 3]
         }).pipe(distinctStringify());
-        const expect = 'a-b-c|';
-        m.expect(o$).toBeObservable(expect, {
+        const result = 'a-b-c|';
+        m.expect(o$).toBeObservable(result, {
             a: [1, 2, 3],
             b: [3, 2, 1],
             c: [1, 2, 3]

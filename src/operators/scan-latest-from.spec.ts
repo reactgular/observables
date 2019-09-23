@@ -6,16 +6,16 @@ describe('scanLatestFrom', () => {
         const acc = (acc: any, next: any) => acc + next;
         const seed = m.cold('  1----|');
         const source = m.cold('a-b-c|').pipe(scanLatestFrom(acc, seed));
-        const expect = '       a-b-c|';
-        m.expect(source).toBeObservable(expect, {a: '1a', b: '1ab', c: '1abc'});
+        const result = '       a-b-c|';
+        m.expect(source).toBeObservable(result, {a: '1a', b: '1ab', c: '1abc'});
     }));
 
     it('should accumulate values from multiple seed values', marbles(m => {
         const acc = (acc: any, next: any) => acc + next;
         const seed = m.cold('  1-----2-----3|');
         const source = m.cold('a-b-c-d-e-f-g-h-i|').pipe(scanLatestFrom(acc, seed));
-        const expect = '       a-b-c-d-e-f-g-h-i|';
-        m.expect(source).toBeObservable(expect, {
+        const result = '       a-b-c-d-e-f-g-h-i|';
+        m.expect(source).toBeObservable(result, {
             a: '1a', b: '1ab', c: '1abc',
             d: '2d', e: '2de', f: '2def',
             g: '3g', h: '3gh', i: '3ghi'
@@ -37,7 +37,7 @@ describe('scanLatestFrom', () => {
         const acc = (acc: any, next: any) => acc + next;
         const seed = m.cold('#');
         const source = m.cold('a-b-c|').pipe(scanLatestFrom(acc, seed));
-        const expect = '       #';
-        m.expect(source).toBeObservable(expect);
+        const result = '       #';
+        m.expect(source).toBeObservable(result);
     }));
 });
