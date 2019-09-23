@@ -1,5 +1,5 @@
 import {BehaviorSubject, concat, merge, Observable, of} from 'rxjs';
-import {catchError, filter, finalize, map, mergeAll} from 'rxjs/operators';
+import {catchError, filter, finalize, first, map, mergeAll} from 'rxjs/operators';
 
 /* tslint:disable:max-line-length */
 export function mergeDelayError<O1>(o1: Observable<O1>): Observable<O1>;
@@ -33,6 +33,7 @@ export function mergeDelayError<T>(...observables: Observable<T>[]): Observable<
             ));
 
             const error$ = replayError$.pipe(
+                first(),
                 filter(value => value !== EMPTY_ERROR),
                 map(value => {
                     throw value;
