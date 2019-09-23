@@ -11,6 +11,10 @@ export function mergeTrim<O1, O2, O3, O4, O5, O6>(o1: Observable<O1>, o2: Observ
 export function mergeTrim<T>(...observables: Observable<T>[]): Observable<T>;
 /* tslint:enable:max-line-length */
 
+/**
+ * Creates an output observable which concurrently emits all values from every
+ * given input observable until any observable completes.
+ */
 export function mergeTrim<T>(...observables: Observable<T>[]): Observable<T> {
     const done$ = new Subject<void>();
     const mergeTrim$ = observables.map(o => o.pipe(

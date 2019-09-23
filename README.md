@@ -59,8 +59,8 @@ Here is a list of utility functions that you can use from this library.
 
 Operators | Operators | Operators | Operators
 -----------|-----------|-----------|-----------
-[combineEarliest](#combineearliest) | [mergeDelayError](#mergedelayerror) | [mergeTrim](#mergetrim) | [roundRobin](#roundrobin)
-[toObservable](#toobservable) | [windowResize](#windowresize) | [](#) | [](#)
+[combineEarliest](#combineearliest) | [mergeChain](#mergechain) | [mergeDelayError](#mergedelayerror) | [mergeTrim](#mergetrim)
+[roundRobin](#roundrobin) | [switchChain](#switchchain) | [toObservable](#toobservable) | [windowResize](#windowresize)
 
 
 ## Operators List
@@ -638,6 +638,31 @@ combineEarliest([
 [[source](https://github.com/reactgular/observables/blob/master/src/utils/combine-earliest.ts)] [[up](#utilities)]
 
 ----
+### mergeChain
+
+When the source observable emits a value it is passed to the next *switchTo* function which returns another observable, and the
+value from that observable is passed onto the next *switchTo* function. It creates a new observable that emits an array of
+all values emitted from chained observables. 
+
+> Uses [mergeMap()](https://rxjs.dev/api/operators/mergeMap) internally to chain the functions together.
+
+```typescript
+mergeChain<T, R>(source: Observable<T>, ...mergeTo: Array<(...values: any[]) => Observable<any>>): Observable<R>
+```
+
+Example:
+
+```typescript
+mergeChain(
+    store.select('company'),
+    (company) => store.selectPriceChanges(company.id),
+    (price, company) => store.selectPriceUpdates(price.id)
+).subscribe(([changes, price, company]) => console.log(changes, price, company));
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/utils/merge-chain.ts)] [[up](#utilities)]
+
+----
 ### mergeDelayError
 
 Creates an output observable which concurrently emits all values from every
@@ -692,6 +717,32 @@ function roundRobin<T>(...observables: Observable<T>[]): Observable<T>
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/utils/round-robin.ts)] [[up](#utilities)]
+
+----
+### switchChain
+
+When the source observable emits a value it is passed to the next *switchTo* function which returns another observable, and the
+value from that observable is passed onto the next *switchTo* function. It creates a new observable that emits an array of
+all values emitted from chained observables. 
+
+> Uses [switchMap()](https://rxjs.dev/api/operators/switchMap) internally to chain the functions together.
+
+```typescript
+switchChain<T, R>(source: Observable<T>, ...switchTo: Array<(...values: any[]) => Observable<any>>): Observable<R>
+```
+
+Example:
+
+```typescript
+switchChain(
+    http.get('/user'),
+    (user) => http.get(`/projects/${user.projectId}`),
+    (project, user) => http.get(`/company/${project.companyId}`),
+    (company, project, user) => http.get(`/brand/${company.brandId}`)
+).subscribe(([brand, company, project, user]) => console.log(brand, company, project, user));
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/utils/switch-chain.ts)] [[up](#utilities)]
 
 ----
 ### toObservable

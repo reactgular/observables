@@ -4,8 +4,8 @@ import {mapLast} from './map-last';
 describe('mapLast', () => {
     it('should map the last value', marbles(m => {
         const source = m.cold('a-b-c-d-|').pipe(mapLast(v => `!${v}!`));
-        const expect = '       --a-b-c-(d|)';
-        m.expect(source).toBeObservable(expect, {
+        const result = '       --a-b-c-(d|)';
+        m.expect(source).toBeObservable(result, {
             a: 'a',
             b: 'b',
             c: 'c',
@@ -20,13 +20,13 @@ describe('mapLast', () => {
 
     it('should not emit last value if observable never completes', marbles(m => {
         const source = m.cold('a-b-c-d').pipe(mapLast(v => `!${v}!`));
-        const expect = '       --a-b-c)';
-        m.expect(source).toBeObservable(expect);
+        const result = '       --a-b-c)';
+        m.expect(source).toBeObservable(result);
     }));
 
     it('should emit last value for single value and completes', marbles(m => {
         const source = m.cold('a|').pipe(mapLast(v => `!${v}!`));
-        const expect = '-(a|)';
-        m.expect(source).toBeObservable(expect, {a: '!a!'});
+        const result = '-(a|)';
+        m.expect(source).toBeObservable(result, {a: '!a!'});
     }));
 });

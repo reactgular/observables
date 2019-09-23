@@ -12,6 +12,10 @@ export function roundRobin<O1, O2, O3, O4, O5, O6>(o1: Observable<O1>, o2: Obser
 export function roundRobin<T>(...observables: Observable<T>[]): Observable<T>;
 /* tslint:enable:max-line-length */
 
+/**
+ * Creates an output observable which emits values from each observable in a round robin sequence. Where the first observable must emit
+ * a value, before the next observable emits a value and starts over after all observables have emitted a value.
+ */
 export function roundRobin<T>(...observables: Observable<T>[]): Observable<T> {
     const SKIP_VALUE: T = Object.freeze({}) as any as T;
     const scanFunc = (acc: [number, T], next: [number, T]): [number, T] => {

@@ -15,13 +15,13 @@ describe('beforeError', () => {
 
     it('should emit the previous value upon an error', marbles(m => {
         const source = m.cold('a-b-c-d-#').pipe(beforeError());
-        const expect = '       --------(a|)';
-        m.expect(source).toBeObservable(expect, {a: ['d']});
+        const result = '       --------(a|)';
+        m.expect(source).toBeObservable(result, {a: ['d']});
     }));
 
     it('should emit the previous 3 values upon an error', marbles(m => {
         const source = m.cold('a-b-c-d-#').pipe(beforeError(3));
-        const expect = '       --------(a|)';
-        m.expect(source).toBeObservable(expect, {a: ['d', 'c', 'b']});
+        const result = '       --------(a|)';
+        m.expect(source).toBeObservable(result, {a: ['d', 'c', 'b']});
     }));
 });

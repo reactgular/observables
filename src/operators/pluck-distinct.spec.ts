@@ -4,14 +4,14 @@ import {pluckDistinct} from './pluck-distinct';
 describe('pluckDistinct', () => {
     it('should pluck a property value', marbles(m => {
         const o$ = m.cold('a|', {a: {name: 'John Smith'}}).pipe(pluckDistinct('name'));
-        const expect = '   a|';
-        m.expect(o$).toBeObservable(expect, {a: 'John Smith'});
+        const result = '   a|';
+        m.expect(o$).toBeObservable(result, {a: 'John Smith'});
     }));
 
     it('should pluck nested property', marbles(m => {
         const o$ = m.cold('a|', {a: {person: {name: 'John Smith'}}}).pipe(pluckDistinct('person', 'name'));
-        const expect = '   a|';
-        m.expect(o$).toBeObservable(expect, {a: 'John Smith'});
+        const result = '   a|';
+        m.expect(o$).toBeObservable(result, {a: 'John Smith'});
     }));
 
     it('should emit unique values', marbles(m => {
@@ -26,8 +26,8 @@ describe('pluckDistinct', () => {
             h: {name: 'Jason Doe'}
         };
         const o$ = m.cold('a-b-c-d-e-f-g-h|', values).pipe(pluckDistinct('name'));
-        const expect = '   a-----d---f-g-h|';
-        m.expect(o$).toBeObservable(expect, {
+        const result = '   a-----d---f-g-h|';
+        m.expect(o$).toBeObservable(result, {
             a: 'John Smith',
             d: 'Jane Doe',
             f: 'Mike Smith',
