@@ -11,10 +11,12 @@ Observables is a small Rxjs 6 library that contains handy operators and utilitie
 This library contains operators and utilities that solve some very common problems that I face with Rxjs. Here is
 a quick list of features that I use most often in projects.
 
-- `ifOp()` and `ifElseOp()` apply operators based upon conditions.
-- `windowResize()` creates a debounced observable of window size changes.
-- `withSwitchMap()` uses `switchMap()` but emits the outer and inner values.
-- `enabledWhen()` only emits when another observable emits `true`.
+- [ifOp()](#ifop) apply operators based upon conditions.
+- [windowResize()](#windowresize) creates a debounced observable of window size changes.
+- [withSwitchMap()](#withswitchmap) and [withMergeMap()](#withmergemap) but emits the outer and inner values.
+- [enabledWhen()](#enabledwhen) and [disabledWhen()](#disabledwhen) toggle the flow of values.
+- [loadFirst()](#loadfirst) emits a state object for HTTP requests.
+- [switchChain()](#switchchain) links together multiple [switchMap()](https://rxjs.dev/api/operators/switchMap) operators.
 
 ## Installation
 
@@ -24,43 +26,48 @@ To get started, install the package from npm.
 npm install @reactgular/observables
 ```
 
+This package requires the Rxjs 6 as a peer dependency.
+
+```bash
+npm install rxjs
+```
+
 ## Usage
 
-Utility functions are imported directly from the package path `@reactgular/observables`, but operators are
-imported from `@reactgular/observables/operators`.
+Operators and utilities are imported from the package path `@reactgular/observables`.
 
 For example;
 
 ```typescript
-import {windowResize} from '@reactgular/observables';
-import {distinctStringify} from '@reactgular/observables/operators';
+import {Observable} from 'rxjs';
+import {windowResize, distinctStringify} from '@reactgular/observables';
 
-windowResize(250).pipe(
-  distinctStringify()
-).subscribe(v => console.log(v));
+function conditionalResize(cond$: Observable<boolean>): Observable<{}> {
+    return windowResize(250).pipe(
+      enabledWhen(cond$)
+    );
+}
 ```
 
 # Operators
 
 Here is a list of observable operators that you can use from this library.
 
-Operators | Operators | Operators | Operators
------------|-----------|-----------|-----------
-[after](#after) | [before](#before) | [beforeError](#beforeerror) | [counter](#counter)
-[disabledWhen](#disabledwhen) | [distinctArray](#distinctarray) | [distinctDeepEqual](#distinctdeepequal) | [distinctStringify](#distinctstringify)
-[enabledWhen](#enabledwhen) | [falsy](#falsy) | [historyBuffer](#historybuffer) | [ifOp](#ifop)
-[loadFirst](#loadfirst) | [mapFirst](#mapfirst) | [mapLast](#maplast) | [negate](#negate)
-[pluckDistinct](#pluckdistinct) | [scanLatestFrom](#scanlatestfrom) | [truthy](#truthy) | [withMergeMap](#withmergemap)
-[withSwitchMap](#withswitchmap) | [](#) | [](#) | [](#)
+Operators | Operators | Operators | Operators | Operators | Operators
+----------|-----------|-----------|-----------|-----------|-----------
+[after](#after) | [before](#before) | [beforeError](#beforeerror) | [counter](#counter) | [disabledWhen](#disabledwhen) | [distinctArray](#distinctarray)
+[distinctDeepEqual](#distinctdeepequal) | [distinctStringify](#distinctstringify) | [enabledWhen](#enabledwhen) | [falsy](#falsy) | [historyBuffer](#historybuffer) | [ifOp](#ifop)
+[loadFirst](#loadfirst) | [mapFirst](#mapfirst) | [mapLast](#maplast) | [negate](#negate) | [pluckDistinct](#pluckdistinct) | [scanLatestFrom](#scanlatestfrom)
+[truthy](#truthy) | [withMergeMap](#withmergemap) | [withSwitchMap](#withswitchmap) | [](#) | [](#) | [](#)
 
 # Utilities
 
 Here is a list of utility functions that you can use from this library.
 
-Operators | Operators | Operators | Operators
------------|-----------|-----------|-----------
-[combineEarliest](#combineearliest) | [mergeChain](#mergechain) | [mergeDelayError](#mergedelayerror) | [mergeTrim](#mergetrim)
-[roundRobin](#roundrobin) | [switchChain](#switchchain) | [toObservable](#toobservable) | [windowResize](#windowresize)
+Operators | Operators | Operators | Operators | Operators | Operators
+----------|-----------|-----------|-----------|-----------|-----------
+[combineEarliest](#combineearliest) | [mergeChain](#mergechain) | [mergeDelayError](#mergedelayerror) | [mergeTrim](#mergetrim) | [roundRobin](#roundrobin) | [switchChain](#switchchain)
+[toObservable](#toobservable) | [windowResize](#windowresize) | [](#) | [](#) | [](#) | [](#)
 
 
 ## Operators List
@@ -87,7 +94,7 @@ of('starting', 'started', 'error', 'restarting').pipe(
 ).subscribe(v => console.log(v)); // prints "restarting"
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/after.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/after.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/after.spec.ts)] [[up](#operators)]
 
 ----
 ### before
@@ -112,7 +119,7 @@ of('starting', 'started', 'error', 'restarting').pipe(
 ).subscribe(v => console.log(v)); // prints "started"
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/before.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/before.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/before.spec.ts)] [[up](#operators)]
 
 ----
 ### beforeError
@@ -134,7 +141,7 @@ of('starting','started','restarting').pipe(
 }).subscribe(v => console.log(v)); // prints ["started"]
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/beforeError.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/beforeError.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/beforeError.spec.ts)] [[up](#operators)]
 
 ----
 ### counter
@@ -157,7 +164,7 @@ of('a', 'b', 'c', 'd').pipe(
 // [4, 'd']    
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/counter.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/counter.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/counter.spec.ts)] [[up](#operators)]
 
 ----
 ### disabledWhen
@@ -171,7 +178,7 @@ outer observable, and emit a *falsy* to resume emitting values.
 disabledWhen<T>(disabled$: Observable<boolean>): MonoTypeOperatorFunction<T>
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/disabled-when.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/disabled-when.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/disabled-when.spec.ts)] [[up](#operators)]
 
 ----
 ### distinctArray
@@ -197,7 +204,7 @@ of([1,2,3], [3,2,1], [1, 3, 2], [4, 5, 6], [1, 2, 3]).pipe(
 // [1,2,3]
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/distinct-array.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/distinct-array.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/distinct-array.spec.ts)] [[up](#operators)]
 
 ----
 ### distinctDeepEqual
@@ -220,7 +227,7 @@ of([1,2],[2,1],{a:1, b:1},{b:1, a:1}).pipe(
 // {a:1, b:1}
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/distinct-deep-equal.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/distinct-deep-equal.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/distinct-deep-equal.spec.ts)] [[up](#operators)]
 
 ----
 ### distinctStringify
@@ -249,7 +256,7 @@ of([1,2,3], [1,2,3], [3,2,1], {a: 1}, {a: 1}, {a: 1, b: 1}, {b: 1, a: 1}, "one",
 // "two"
 ``` 
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/distinct-stringify.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/distinct-stringify.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/distinct-stringify.spec.ts)] [[up](#operators)]
 
 ----
 ### enabledWhen
@@ -263,7 +270,7 @@ outer observable, and emit a *truthy* to resume emitting values.
 enabledWhen<T>(enabled: Observable<boolean>): MonoTypeOperatorFunction<T>
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/enabled-when.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/enabled-when.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/enabled-when.spec.ts)] [[up](#operators)]
 
 ----
 ### falsy
@@ -282,7 +289,7 @@ of(0, "Hello", false, [1,2], "")
     .subscribe(v => console.log(v)); // prints [0, false, ""]
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/falsy.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/falsy.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/falsy.spec.ts)] [[up](#operators)]
 
 ----
 ### historyBuffer
@@ -307,7 +314,7 @@ of(1,2,3,4,5).pipe(
 // [5,4,3]
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/historyBuffer.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/historyBuffer.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/historyBuffer.spec.ts)] [[up](#operators)]
 
 ----
 ### ifOp
@@ -343,7 +350,7 @@ function switchOrMerge(cond: boolean): Observable<number> {
 }
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/if-op.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/if-op.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/if-op.spec.ts)] [[up](#operators)]
 
 ----
 ### loadFirst
@@ -412,7 +419,7 @@ export class ExampleComponent implements OnInit {
 }
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/load-first.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/load-first.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/load-first.spec.ts)] [[up](#operators)]
 
 ----
 ### mapFirst
@@ -434,7 +441,7 @@ of(1,2,3,4).pipe(
 // 4
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/map-first.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/map-first.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/map-first.spec.ts)] [[up](#operators)]
 
 ----
 ### mapLast
@@ -465,7 +472,7 @@ of(1,2,3).pipe(
 // 1003
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/map-last.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/map-last.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/map-last.spec.ts)] [[up](#operators)]
 
 ----
 ### negate
@@ -486,7 +493,7 @@ of(0, "Hello", false, [1,2,3], "").pipe(
 // prints [true, false, true, false, true]
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/negate.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/negate.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/negate.spec.ts)] [[up](#operators)]
 
 ----
 ### pluckDistinct
@@ -513,7 +520,7 @@ from([
 ).subscribe(v => console.log(v)); // prints ['John Smith', 'Jane Doe']
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/pluck-distinct.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/pluck-distinct.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/pluck-distinct.spec.ts)] [[up](#operators)]
 
 ----
 ### scanLatestFrom
@@ -535,7 +542,7 @@ Accumulator function parameters:
 scanLatestFrom<T, A, R>(accumulator: (acc: A | R, value: T, index: number, reset: boolean) => R, latest: Observable<A>): OperatorFunction<T, R>
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/scan-latest-from.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/scan-latest-from.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/scan-latest-from.spec.ts)] [[up](#operators)]
 
 ----
 ### truthy
@@ -559,7 +566,7 @@ of(0, false, [1,2,3], "Hello", "", {}).pipe(
 // prints [[1,2,3], "Hello", {}]
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/truthy.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/truthy.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/truthy.spec.ts)] [[up](#operators)]
 
 ----
 ### withMergeMap
@@ -582,7 +589,7 @@ of('A', 'B', 'C').pipe(
 // ['C', '1']
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/with-merge-map.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/with-merge-map.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/with-merge-map.spec.ts)] [[up](#operators)]
 
 ----
 ### withSwitchMap
@@ -605,7 +612,7 @@ of('A', 'B', 'C').pipe(
 // ['C', '1']
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/with-switch-map.ts)] [[up](#operators)]
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/with-switch-map.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/with-switch-map.spec.ts)] [[up](#operators)]
 
 ----
 ## Utilities List
@@ -635,7 +642,7 @@ combineEarliest([
 // [2, 'A', 'B']
 ``` 
 
-[[source](https://github.com/reactgular/observables/blob/master/src/utils/combine-earliest.ts)] [[up](#utilities)]
+[[source](https://github.com/reactgular/observables/blob/master/src/utils/combine-earliest.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/utils/combine-earliest.spec.ts)] [[up](#utilities)]
 
 ----
 ### mergeChain
@@ -660,7 +667,7 @@ mergeChain(
 ).subscribe(([changes, price, company]) => console.log(changes, price, company));
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/utils/merge-chain.ts)] [[up](#utilities)]
+[[source](https://github.com/reactgular/observables/blob/master/src/utils/merge-chain.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/utils/merge-chain.spec.ts)] [[up](#utilities)]
 
 ----
 ### mergeDelayError
@@ -692,7 +699,7 @@ mergeDelayError(
 // ERROR
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/utils/merge-delay-error.ts)] [[up](#utilities)]
+[[source](https://github.com/reactgular/observables/blob/master/src/utils/merge-delay-error.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/utils/merge-delay-error.spec.ts)] [[up](#utilities)]
 
 ----
 ### mergeTrim
@@ -704,7 +711,7 @@ given input observable until any observable completes.
 mergeTrim<T>(...observables: Observable<T>[]): Observable<T>
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/utils/merge-trim.ts)] [[up](#utilities)]
+[[source](https://github.com/reactgular/observables/blob/master/src/utils/merge-trim.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/utils/merge-trim.spec.ts)] [[up](#utilities)]
 
 ----
 ### roundRobin
@@ -716,7 +723,7 @@ a value, before the next observable emits a value and starts over after all obse
 function roundRobin<T>(...observables: Observable<T>[]): Observable<T>
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/utils/round-robin.ts)] [[up](#utilities)]
+[[source](https://github.com/reactgular/observables/blob/master/src/utils/round-robin.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/utils/round-robin.spec.ts)] [[up](#utilities)]
 
 ----
 ### switchChain
@@ -742,7 +749,7 @@ switchChain(
 ).subscribe(([brand, company, project, user]) => console.log(brand, company, project, user));
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/utils/switch-chain.ts)] [[up](#utilities)]
+[[source](https://github.com/reactgular/observables/blob/master/src/utils/switch-chain.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/utils/switch-chain.spec.ts)] [[up](#utilities)]
 
 ----
 ### toObservable
@@ -764,7 +771,7 @@ forkJoin(values.map(toObservable))
 // prints [100, 200, 300]
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/utils/to-observable.ts)] [[up](#utilities)]
+[[source](https://github.com/reactgular/observables/blob/master/src/utils/to-observable.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/utils/to-observable.spec.ts)] [[up](#utilities)]
 
 ----
 ### windowResize
@@ -785,6 +792,6 @@ const aspect$ = windowResize(250).pipe(
 );
 ```
 
-[[source](https://github.com/reactgular/observables/blob/master/src/utils/window-resize.ts)] [[up](#utilities)]
+[[source](https://github.com/reactgular/observables/blob/master/src/utils/window-resize.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/utils/window-resize.spec.ts)] [[up](#utilities)]
 
 ----

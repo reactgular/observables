@@ -54,6 +54,7 @@ const features = (files, up) => files
     file,
     name: fileToName(file),
     url: 'https://github.com/reactgular/observables/blob/master/' + file.replace(/\.md$/, '.ts'),
+    test: 'https://github.com/reactgular/observables/blob/master/' + file.replace(/\.md$/, '.spec.ts'),
     up,
     content: readFile(file)
   }));
@@ -105,7 +106,7 @@ function contents(features, name, description) {
   return {
     name,
     description,
-    toc: toc(features.map(s => s.name), 4),
+    toc: toc(features.map(s => s.name), 6),
     features
   };
 }
