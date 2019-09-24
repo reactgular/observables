@@ -11,10 +11,12 @@ Observables is a small Rxjs 6 library that contains handy operators and utilitie
 This library contains operators and utilities that solve some very common problems that I face with Rxjs. Here is
 a quick list of features that I use most often in projects.
 
-- `ifOp()` and `ifElseOp()` apply operators based upon conditions.
-- `windowResize()` creates a debounced observable of window size changes.
-- `withSwitchMap()` uses `switchMap()` but emits the outer and inner values.
-- `enabledWhen()` only emits when another observable emits `true`.
+- [ifOp()](#ifop) apply operators based upon conditions.
+- [windowResize()](#windowresize) creates a debounced observable of window size changes.
+- [withSwitchMap()](#withswitchmap) and [withMergeMap()](#withmergemap) but emits the outer and inner values.
+- [enabledWhen()](#enabledwhen) and [disabledWhen()](#disabledwhen) toggle the flow of values.
+- [loadFirst()](#loadfirst) emits a state object for HTTP requests.
+- [switchChain()](#switchchain) links together multiple [switchMap()](https://rxjs.dev/api/operators/switchMap) operators.
 
 ## Installation
 
@@ -24,20 +26,27 @@ To get started, install the package from npm.
 npm install @reactgular/observables
 ```
 
+This package requires the Rxjs 6 as a peer dependency.
+
+```bash
+npm install rxjs
+```
+
 ## Usage
 
-Utility functions are imported directly from the package path `@reactgular/observables`, but operators are
-imported from `@reactgular/observables/operators`.
+Operators and utilities are imported from the package path `@reactgular/observables`.
 
 For example;
 
 ```typescript
-import {windowResize} from '@reactgular/observables';
-import {distinctStringify} from '@reactgular/observables/operators';
+import {Observable} from 'rxjs';
+import {windowResize, distinctStringify} from '@reactgular/observables';
 
-windowResize(250).pipe(
-  distinctStringify()
-).subscribe(v => console.log(v));
+function conditionalResize(cond$: Observable<boolean>): Observable<{}> {
+    return windowResize(250).pipe(
+      enabledWhen(cond$)
+    );
+}
 ```
 
 {{#sections}}
@@ -45,8 +54,8 @@ windowResize(250).pipe(
 
 {{description}}
 
-Operators | Operators | Operators | Operators
------------|-----------|-----------|-----------
+Operators | Operators | Operators | Operators | Operators | Operators
+----------|-----------|-----------|-----------|-----------|-----------
 {{#toc}}
 {{#row}}[{{name}}](#{{id}}){{#separator}} | {{/separator}}{{/row}}
 {{/toc}}
@@ -60,7 +69,7 @@ Operators | Operators | Operators | Operators
 ### {{name}}
 
 {{{content}}}
-[[source]({{{url}}})] [[up](#{{up}})]
+[[source]({{{url}}})] [[tests]({{{test}}})] [[up](#{{up}})]
 
 ----
 {{/features}}
