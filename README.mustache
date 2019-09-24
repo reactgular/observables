@@ -4,49 +4,73 @@
 
 ## What is Observables?
 
-Observables is a small Angular library that contains rxjs operators.
+Observables is a small Rxjs 6 library that contains handy operators and utilities.
 
-## Why another console rxjs library?
+## Why use this rxjs library?
 
-I needed somewhere to share common operators that I've created on various projects. I've tried to make these operators are generic and reusable as possible so
-that they can be applied to a wider range of situations.
+This library contains operators and utilities that solve some very common problems that I face with Rxjs. Here is
+a quick list of features that I use most often in projects.
+
+- [ifOp()](#ifop) apply operators based upon conditions.
+- [windowResize()](#windowresize) creates a debounced observable of window size changes.
+- [withSwitchMap()](#withswitchmap) and [withMergeMap()](#withmergemap) but emits the outer and inner values.
+- [enabledWhen()](#enabledwhen) and [disabledWhen()](#disabledwhen) toggle the flow of values.
+- [loadFirst()](#loadfirst) emits a state object for HTTP requests.
+- [switchChain()](#switchchain) links together multiple [switchMap()](https://rxjs.dev/api/operators/switchMap) operators.
 
 ## Installation
 
-To get started, install the package from npm. The latest version (1.x) supports Angular 8.
+To get started, install the package from npm.
 
 ```bash
-npm install --save @reactgular/observables
-
-# or if you are using yarn
-yarn add @reactgular/observables
+npm install @reactgular/observables
 ```
 
-Each operator or utility function can be imported directly from the package path `@reactgular/observables`.
+This package requires the Rxjs 6 as a peer dependency.
+
+```bash
+npm install rxjs
+```
+
+## Usage
+
+Operators and utilities are imported from the package path `@reactgular/observables`.
 
 For example;
 
 ```typescript
-import {of} from 'rxjs';
-import {distinctStringify} from '@reactgular/observables';
+import {Observable} from 'rxjs';
+import {windowResize, distinctStringify} from '@reactgular/observables';
 
-of([1,2,3], [1,2,3], [4,5,6]).pipe(
-  distinctStringify()
-).subscribe(v => console.log(v)); // prints "[1,2,3] [4,5,6]"
+function conditionalResize(cond$: Observable<boolean>): Observable<{}> {
+    return windowResize(250).pipe(
+      enabledWhen(cond$)
+    );
+}
 ```
 
-# Operators
+{{#sections}}
+# {{name}}
 
-Here is a list of rxjs operators that you can use from this library.
+{{description}}
 
-```typescript
-{{{operators}}}
-```
+Operators | Operators | Operators | Operators | Operators | Operators
+----------|-----------|-----------|-----------|-----------|-----------
+{{#toc}}
+{{#row}}[{{name}}](#{{id}}){{#separator}} | {{/separator}}{{/row}}
+{{/toc}}
 
-# Utilities
+{{/sections}}
 
-Here is a list of utility functions that you can use from this library.
+{{#sections}}
+## {{name}} List
 
-```typescript
-{{{utilities}}}
-```
+{{#features}}
+### {{name}}
+
+{{{content}}}
+[[source]({{{url}}})] [[tests]({{{test}}})] [[up](#{{up}})]
+
+----
+{{/features}}
+{{/sections}}

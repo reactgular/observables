@@ -1,25 +1,20 @@
 sudo: false
-
 language: node_js
-
 node_js:
     - '10'
-
 branches:
     only:
         - master
-        - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
-
+        - /^\d+\.\d+(\.(\d+|x))?(-\S*)?$/
 cache:
     directories:
         - node_modules
-
 services:
     - xvfb
-
 addons:
     chrome: stable
-
+before_install:
+    - npm update
 install:
     - npm set progress=false
     - npm install
@@ -27,4 +22,5 @@ install:
 
 script:
     - npm test
-    - cat ./coverage/observables/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+    - npm run lint
+    - npm run coveralls

@@ -1,30 +1,40 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
+    "removeComments": false,
+    "preserveConstEnums": true,
     "sourceMap": true,
-    "declaration": false,
-    "module": "es2015",
+    "strictFunctionTypes": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "suppressImplicitAnyIndexErrors": true,
     "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
+    "stripInternal": false,
     "importHelpers": true,
     "target": "es5",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
     "lib": [
-      "es2018",
+      "es5",
+      "es2015",
       "dom"
     ],
+    "baseUrl": "./src",
+    "sourceRoot": "./src",
     "paths": {
       "@reactgular/observables": [
-        "dist/observables"
+        "./"
       ],
       "@reactgular/observables/*": [
-        "dist/observables/*"
+        "./*"
       ]
     }
-  }
+  },
+  "formatCodeOptions": {
+    "indentSize": 2,
+    "tabSize": 2
+  },
+  "files": [
+    "./src/index.ts"
+  ]
 }
