@@ -2,7 +2,7 @@ import {Observable} from 'rxjs';
 import {marbles} from 'rxjs-marbles';
 import {switchChain} from './switch-chain';
 
-describe('switchChain', () => {
+describe('utils/switchChain', () => {
     it('should emit an array of values in reserve order', marbles(m => {
         const source = switchChain(
             m.cold('a'),

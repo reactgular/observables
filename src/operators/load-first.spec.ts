@@ -1,7 +1,7 @@
 import {marbles} from 'rxjs-marbles';
 import {loadFirst} from './load-first';
 
-describe('trackStatus', () => {
+describe('operators/trackStatus', () => {
     it('should emit an error if the observable completes without any results', marbles(m => {
         const source = m.cold('|').pipe(loadFirst('starting', 'empty'));
         const result = '       (se|)';

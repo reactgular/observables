@@ -1,7 +1,7 @@
 import {marbles} from 'rxjs-marbles';
 import {beforeError} from './beforeError';
 
-describe('beforeError', () => {
+describe('operators/beforeError', () => {
     it('should emit nothing for empty observables', marbles(m => {
         m.expect(m.cold('').pipe(beforeError())).toBeObservable('');
         m.expect(m.cold('|').pipe(beforeError())).toBeObservable('|');

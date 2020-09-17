@@ -1,7 +1,7 @@
 import {marbles} from 'rxjs-marbles/jest';
 import {disabledWhen} from './disabled-when';
 
-describe('disabledWhen', () => {
+describe('operators/disabledWhen', () => {
     it('should not emit if source completes', marbles(m => {
         const s$ = m.cold('|');
         const o$ = m.cold('a-b-c-d-e|').pipe(disabledWhen(s$));

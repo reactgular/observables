@@ -1,7 +1,7 @@
 import {marbles} from 'rxjs-marbles';
 import {withSwitchMap} from './with-switch-map';
 
-describe('withSwitchMap', () => {
+describe('operators/withSwitchMap', () => {
     it('should emit the outer and inner values', marbles(m => {
         const outer = m.cold('a-(a|)');
         const inner = m.cold('b(b|)');

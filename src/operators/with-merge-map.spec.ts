@@ -1,7 +1,7 @@
 import {marbles} from 'rxjs-marbles';
 import {withMergeMap} from './with-merge-map';
 
-describe('withMergeMap', () => {
+describe('operators/withMergeMap', () => {
     it('should emit the outer and inner values', marbles(m => {
         const outer = m.cold('a-(a|)');
         const inner = m.cold('b(b|)');

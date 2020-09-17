@@ -1,7 +1,7 @@
 import {marbles} from 'rxjs-marbles';
 import {mergeDelayError} from './merge-delay-error';
 
-describe('mergeDelayError', () => {
+describe('utils/mergeDelayError', () => {
     it('should emit error after all observables complete', marbles(m => {
         const o1 = m.cold('a---b---c--|');
         const o2 = m.cold('--1---2---3|');

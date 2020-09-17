@@ -1,7 +1,7 @@
 import {marbles} from 'rxjs-marbles';
 import {distinctStringify} from './distinct-stringify';
 
-describe('distinctStringify', () => {
+describe('operators/distinctStringify', () => {
     it('should not emit duplicate arrays', marbles(m => {
         const o$ = m.cold('a-b-c-d-e|', {
             a: [1, 2, 3],

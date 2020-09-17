@@ -1,7 +1,7 @@
 import {marbles} from 'rxjs-marbles';
 import {distinctArray, mapToSorted, sortedEqual, unmapSorted} from './distinct-array';
 
-describe('distinctArray', () => {
+describe('operators/distinctArray', () => {
     it('should emit unique arrays ignoring order of values', marbles(m => {
         const values = {a: [1, 2, 3], b: [3, 2, 1], c: [5, 6, 7], d: [6, 5, 7], e: [1, 2, 3]};
         const source = m.cold('a-b-c-d-e|', values).pipe(distinctArray());
@@ -37,7 +37,7 @@ describe('distinctArray', () => {
     }));
 });
 
-describe('mapToSorted', () => {
+describe('operators/mapToSorted', () => {
     const varies = [0, undefined, NaN, {}, [], 'FooBar'];
 
     it('should always return an array', () => {
@@ -77,7 +77,7 @@ describe('mapToSorted', () => {
     });
 });
 
-describe('unmapSorted', () => {
+describe('operators/unmapSorted', () => {
     it('should return first array value', () => {
         [
             [1, 2],
@@ -89,7 +89,7 @@ describe('unmapSorted', () => {
     });
 });
 
-describe('sortedEqual', () => {
+describe('operators/sortedEqual', () => {
     it('should return false for non arrays', () => {
         const notArray = [0, undefined, NaN, {}, 'FooBar'];
         notArray.forEach(value => {

@@ -2,7 +2,7 @@ import {marbles} from 'rxjs-marbles';
 import {mapTo} from 'rxjs/operators';
 import {ifOp} from './if-op';
 
-describe('ifOp', () => {
+describe('operators/ifOp', () => {
     it('should apply the operator when true', marbles(m => {
         const o$ = m.cold('a-b-c|').pipe(ifOp(true, mapTo('Hello')));
         const result = '   a-b-c|';

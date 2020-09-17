@@ -1,7 +1,7 @@
 import {marbles} from 'rxjs-marbles';
 import {negate} from './negate';
 
-describe('negate', () => {
+describe('operators/negate', () => {
     it('should invert boolean values', marbles(m => {
         const o$ = m.cold('a-b-c-d|', {a: true, b: false, c: true, d: false}).pipe(negate());
         const result = '   a-b-c-d|';

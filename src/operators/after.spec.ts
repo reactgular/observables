@@ -3,7 +3,7 @@ import {marbles} from 'rxjs-marbles';
 import {toArray} from 'rxjs/operators';
 import {after} from './after';
 
-describe('after', () => {
+describe('operators/after', () => {
     it('should never emit for an empty observable', marbles(m => {
         m.expect(m.cold('|').pipe(after(() => true))).toBeObservable('|');
         m.expect(m.cold('-').pipe(after(() => true))).toBeObservable('-');

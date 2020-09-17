@@ -1,7 +1,7 @@
 import {marbles} from 'rxjs-marbles';
 import {mergeTrim} from './merge-trim';
 
-describe('mergeTrim', () => {
+describe('utils/mergeTrim', () => {
     it('should complete when first observable completes', marbles(m => {
         const o1 = m.cold('a-----b-c-d');
         const o2 = m.cold('1-----2-3-4');

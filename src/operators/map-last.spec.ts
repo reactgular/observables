@@ -1,7 +1,7 @@
 import {marbles} from 'rxjs-marbles';
 import {mapLast} from './map-last';
 
-describe('mapLast', () => {
+describe('operators/mapLast', () => {
     it('should map the last value', marbles(m => {
         const source = m.cold('a-b-c-d-|').pipe(mapLast(v => `!${v}!`));
         const result = '       --a-b-c-(d|)';

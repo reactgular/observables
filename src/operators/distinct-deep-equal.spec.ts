@@ -1,7 +1,7 @@
 import {marbles} from 'rxjs-marbles';
 import {deepEqual, distinctDeepEqual} from './distinct-deep-equal';
 
-describe('distinctDeepEqual', () => {
+describe('operators/distinctDeepEqual', () => {
     it('should distinguish between values', marbles(m => {
         const source = m.cold('-1--2-2---1-3-|').pipe(distinctDeepEqual());
         const result = '       -1--2-----1-3-|';
@@ -37,7 +37,7 @@ describe('distinctDeepEqual', () => {
     }));
 });
 
-describe('deepEqual', () => {
+describe('operators/deepEqual', () => {
     it('should return true for same references', () => {
         const same = [{}, [], 0, undefined];
         same.forEach(value => expect(deepEqual(value, value)).toBe(true));

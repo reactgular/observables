@@ -1,7 +1,7 @@
 import {marbles} from 'rxjs-marbles';
 import {roundRobin} from './round-robin';
 
-describe('roundRobin', () => {
+describe('utils/roundRobin', () => {
     it('should emit values in a round robin pattern', marbles(m => {
         const o1 = m.cold('----a---b---c---d--|');
         const o2 = m.cold('--1---2---3---4---5|');

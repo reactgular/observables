@@ -2,7 +2,7 @@ import {Observable} from 'rxjs';
 import {marbles} from 'rxjs-marbles';
 import {mergeChain} from './merge-chain';
 
-describe('mergeChain', () => {
+describe('utils/mergeChain', () => {
     it('should emit an array of values in reserve order', marbles(m => {
         const source = mergeChain(
             m.cold('a'),

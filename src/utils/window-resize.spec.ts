@@ -1,7 +1,7 @@
 import {first, skip} from 'rxjs/operators';
 import {windowResize} from './window-resize';
 
-describe('windowResize', () => {
+describe('utils/windowResize', () => {
     it('should emit an initial value', async () => {
         const value = await windowResize().pipe(first()).toPromise();
         expect(value).toBeTruthy();

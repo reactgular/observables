@@ -1,7 +1,7 @@
 import {marbles} from 'rxjs-marbles';
 import {pluckDistinct} from './pluck-distinct';
 
-describe('pluckDistinct', () => {
+describe('operators/pluckDistinct', () => {
     it('should pluck a property value', marbles(m => {
         const o$ = m.cold('a|', {a: {name: 'John Smith'}}).pipe(pluckDistinct('name'));
         const result = '   a|';

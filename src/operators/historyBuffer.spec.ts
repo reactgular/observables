@@ -1,7 +1,7 @@
 import {marbles} from 'rxjs-marbles';
 import {historyBuffer} from './historyBuffer';
 
-describe('historyBuffer', () => {
+describe('operators/historyBuffer', () => {
     it('should emit a history of values', marbles(m => {
         const source = m.cold('1-2-3-4-5|').pipe(historyBuffer());
         const result = 'a-b-c-d-e|';

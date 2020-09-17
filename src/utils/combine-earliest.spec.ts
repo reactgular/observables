@@ -1,7 +1,7 @@
 import {marbles} from 'rxjs-marbles';
 import {combineEarliest} from './combine-earliest';
 
-describe('combineEarliest', () => {
+describe('utils/combineEarliest', () => {
     it('should emit the first values from each observable', marbles(m => {
         const o1 = m.cold('a----|');
         const o2 = m.cold('1----|');

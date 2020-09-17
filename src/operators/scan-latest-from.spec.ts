@@ -1,7 +1,7 @@
 import {marbles} from 'rxjs-marbles';
 import {scanLatestFrom} from './scan-latest-from';
 
-describe('scanLatestFrom', () => {
+describe('operators/scanLatestFrom', () => {
     it('should accumulate values from first seed value', marbles(m => {
         const acc = (acc: any, next: any) => acc + next;
         const seed = m.cold('  1----|');
