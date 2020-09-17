@@ -1,6 +1,6 @@
 export {after} from './after';
 export {before} from './before';
-export {beforeError} from './beforeError';
+export {beforeError} from './before-error';
 export {counter} from './counter';
 export {disabledWhen} from './disabled-when';
 export {distinctArray} from './distinct-array';
@@ -8,7 +8,7 @@ export {distinctDeepEqual} from './distinct-deep-equal';
 export {distinctStringify} from './distinct-stringify';
 export {enabledWhen} from './enabled-when';
 export {falsy} from './falsy';
-export {historyBuffer} from './historyBuffer';
+export {historyBuffer} from './history-buffer';
 export {ifOp} from './if-op';
 export {mapFirst} from './map-first';
 export {mapLast} from './map-last';

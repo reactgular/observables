@@ -55,7 +55,7 @@ Here is a list of observable operators that you can use from this library.
 
 Operators | Operators | Operators | Operators | Operators | Operators
 ----------|-----------|-----------|-----------|-----------|-----------
-[after](#after) | [before](#before) | [beforeError](#beforeerror) | [counter](#counter) | [disabledWhen](#disabledwhen) | [distinctArray](#distinctarray)
+[after](#after) | [beforeError](#beforeerror) | [before](#before) | [counter](#counter) | [disabledWhen](#disabledwhen) | [distinctArray](#distinctarray)
 [distinctDeepEqual](#distinctdeepequal) | [distinctStringify](#distinctstringify) | [enabledWhen](#enabledwhen) | [falsy](#falsy) | [historyBuffer](#historybuffer) | [ifOp](#ifop)
 [loadFirst](#loadfirst) | [mapFirst](#mapfirst) | [mapLast](#maplast) | [negate](#negate) | [pluckDistinct](#pluckdistinct) | [scanLatestFrom](#scanlatestfrom)
 [truthy](#truthy) | [withMergeMap](#withmergemap) | [withSwitchMap](#withswitchmap) | [](#) | [](#) | [](#)
@@ -97,6 +97,28 @@ of('starting', 'started', 'error', 'restarting').pipe(
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/after.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/after.spec.ts)] [[up](#operators)]
 
 ----
+### beforeError
+
+Emits an array of values that came before an error and silences the error. You can specify how many values to emit upon an error (the default is `1`).
+The emitted array contains the most recent value first followed by older values.
+
+> This is a good operator for debugging to see what values preceded an error. 
+
+Example:
+
+```typescript
+of('starting','started','restarting').pipe(
+    map(n => {
+        if(n === 'restarting') { throw new Error() }
+        return n;
+    }),
+    beforeError()
+}).subscribe(v => console.log(v)); // prints ["started"]
+```
+
+[[source](https://github.com/reactgular/observables/blob/master/src/operators/before-error.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/before-error.spec.ts)] [[up](#operators)]
+
+----
 ### before
 
 Emits the value that came before the value that passed the provided condition.
@@ -120,28 +142,6 @@ of('starting', 'started', 'error', 'restarting').pipe(
 ```
 
 [[source](https://github.com/reactgular/observables/blob/master/src/operators/before.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/before.spec.ts)] [[up](#operators)]
-
-----
-### beforeError
-
-Emits an array of values that came before an error and silences the error. You can specify how many values to emit upon an error (the default is `1`).
-The emitted array contains the most recent value first followed by older values.
-
-> This is a good operator for debugging to see what values preceded an error. 
-
-Example:
-
-```typescript
-of('starting','started','restarting').pipe(
-    map(n => {
-        if(n === 'restarting') { throw new Error() }
-        return n;
-    }),
-    beforeError()
-}).subscribe(v => console.log(v)); // prints ["started"]
-```
-
-[[source](https://github.com/reactgular/observables/blob/master/src/operators/beforeError.ts)] [[tests](https://github.com/reactgular/observables/blob/master/src/operators/beforeError.spec.ts)] [[up](#operators)]
 
 ----
 ### counter

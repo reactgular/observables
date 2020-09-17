@@ -1,6 +1,6 @@
 import {Observable, of, OperatorFunction} from 'rxjs';
 import {catchError, filter, map} from 'rxjs/operators';
-import {historyBuffer} from './historyBuffer';
+import {historyBuffer} from './history-buffer';
 
 /**
  * Emits values that came before an error. You can specify how many values to emit upon an error, and the default is `1`.

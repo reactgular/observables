@@ -1,5 +1,5 @@
 import {marbles} from 'rxjs-marbles';
-import {beforeError} from './beforeError';
+import {beforeError} from './before-error';
 
 describe('operators/beforeError', () => {
     it('should emit nothing for empty observables', marbles(m => {

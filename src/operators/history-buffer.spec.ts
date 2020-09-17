@@ -1,5 +1,5 @@
 import {marbles} from 'rxjs-marbles';
-import {historyBuffer} from './historyBuffer';
+import {historyBuffer} from './history-buffer';
 
 describe('operators/historyBuffer', () => {
     it('should emit a history of values', marbles(m => {
