@@ -3,17 +3,17 @@ import {scanLatestFrom} from './scan-latest-from';
 
 describe('operators/scanLatestFrom', () => {
     it('should accumulate values from first seed value', marbles(m => {
-        const acc = (acc: any, next: any) => acc + next;
+        const reducer = (acc: any, next: any) => acc + next;
         const seed = m.cold('  1----|');
-        const source = m.cold('a-b-c|').pipe(scanLatestFrom(acc, seed));
+        const source = m.cold('a-b-c|').pipe(scanLatestFrom(reducer, seed));
         const result = '       a-b-c|';
         m.expect(source).toBeObservable(result, {a: '1a', b: '1ab', c: '1abc'});
     }));
 
     it('should accumulate values from multiple seed values', marbles(m => {
-        const acc = (acc: any, next: any) => acc + next;
+        const reducer = (acc: any, next: any) => acc + next;
         const seed = m.cold('  1-----2-----3|');
-        const source = m.cold('a-b-c-d-e-f-g-h-i|').pipe(scanLatestFrom(acc, seed));
+        const source = m.cold('a-b-c-d-e-f-g-h-i|').pipe(scanLatestFrom(reducer, seed));
         const result = '       a-b-c-d-e-f-g-h-i|';
         m.expect(source).toBeObservable(result, {
             a: '1a', b: '1ab', c: '1abc',
@@ -34,9 +34,9 @@ describe('operators/scanLatestFrom', () => {
     }));
 
     it('should emit error from the seed observable', marbles(m => {
-        const acc = (acc: any, next: any) => acc + next;
+        const reducer = (acc: any, next: any) => acc + next;
         const seed = m.cold('#');
-        const source = m.cold('a-b-c|').pipe(scanLatestFrom(acc, seed));
+        const source = m.cold('a-b-c|').pipe(scanLatestFrom(reducer, seed));
         const result = '       #';
         m.expect(source).toBeObservable(result);
     }));

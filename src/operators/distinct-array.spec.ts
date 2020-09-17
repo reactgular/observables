@@ -125,14 +125,8 @@ describe('operators/sortedEqual', () => {
     });
 
     it('should return true for arrays with same values, but in different orders', () => {
-        const sizes = [3, 5, 10, 15, 20];
-        sizes.forEach(size => {
-            let v1, v2;
-            while (JSON.stringify(v1) === JSON.stringify(v2)) {
-                v1 = Array(size).fill(0).map(() => Math.random());
-                v2 = [...v1].sort(() => Math.random());
-            }
-            expect(sortedEqual(mapToSorted(v1), mapToSorted(v2))).toBe(true);
-        });
+        const arr1 = [3, 5, 10, 15, 20];
+        const arr2 = [20, 10, 5, 15, 3];
+        expect(sortedEqual(mapToSorted(arr1), mapToSorted(arr2))).toBe(true);
     });
 });
