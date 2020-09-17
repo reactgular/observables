@@ -8,8 +8,7 @@ module.exports = {
   bail: true,
   collectCoverageFrom: [
     './src/**/*.ts',
-    '!./**/index.ts',
-    '!./src/umd.ts'
+    '!./**/index.ts'
   ],
   roots: [
     './src'
